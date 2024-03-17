@@ -1,3 +1,36 @@
 .search-button:hover {
-    border-color: black;
+    border-color: grey;
+    background-color: rgb(193, 193, 193);
+}
+
+.background-of-navbar {
+    background-color: #F3EEEA;
+}
+
+.login-button {
+    background-color: #B0A695;
+    border: none;
+}
+
+.login-button:hover {
+    background-color: #4f596a;
+}
+
+.login-button:focus {
+    background-color: #414a58;
+    outline: none;
+}
+
+.register-button {
+    background-color: #776B5D;
+    border: none;
+}
+
+.register-button:hover {
+    background-color: #8894a2;
+}
+
+.register-button:focus {
+    background-color: #6c7782;;
+    outline: none;
 }
