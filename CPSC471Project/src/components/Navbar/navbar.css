@@ -1,3 +1,10 @@
+.search-bar {
+    outline: none;
+    color: black;
+}
+.search-button {
+    background-color: rgb(208, 208, 208);
+}
 .search-button:hover {
     border-color: grey;
     background-color: rgb(193, 193, 193);
