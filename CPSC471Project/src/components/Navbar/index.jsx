@@ -16,7 +16,7 @@ const NavBar = () => {
             
 
             <div className="flex-1 mx-4 flex justify-center items-center">
-                <input type="text" placeholder="I am looking for..." className="w-3/4 p-2 rounded border border-inherit h-10 search-bar" style={{borderTopRightRadius: "0", borderBottomRightRadius: "0"}} />
+                <input type="text" placeholder="I am looking for..." className="w-3/4 p-2 rounded border border-inherit h-10 search-bar" style={{borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px", borderTopRightRadius: "0", borderBottomRightRadius: "0"}} />
                 <button className="px-5 h-10 border-inherit search-button" style={{borderTopLeftRadius:"0", borderBottomLeftRadius: "0", borderTopRightRadius: "10px", borderBottomRightRadius: "10px"}}>
                     <FontAwesomeIcon icon={faSearch} style={{color: "#000000"}}/>
                 </button>
@@ -32,6 +32,8 @@ const NavBar = () => {
                     Register
                 </button>
             </div>
+
+            
         </nav>
     );
 };
