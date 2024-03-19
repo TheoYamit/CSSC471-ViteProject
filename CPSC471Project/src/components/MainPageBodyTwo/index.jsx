@@ -4,32 +4,41 @@ import { Box, SimpleGrid, Stack, HStack, VStack, Badge, Text} from '@chakra-ui/r
 import tealSweater from '../../assets/products1/tealsweater.png'
 import redSweater from '../../assets/products1/redsweater.png'
 import purpleSweater from '../../assets/products1/purplesweater.png'
+import ProductBoxNew from '../ProductBox'
 
 const MainPageBodyTwo = () => {
     return (
         <div className="mainpagebodytwo">
             <SimpleGrid columns={3} spacing={5} className="flex justify-center px-6 py-6">
-                <Box className="product-box">
-                   <VStack>
-                        <img src={tealSweater} style={{borderRadius: 30, padding: 10}}></img>
-                        <HStack>
-                            <Badge borderRadius="full" px="2" colorScheme="teal" fontSize="1rem">New</Badge>
-                            <Text>
-                                Hi
-                            </Text>
-                        </HStack>
-                   </VStack>
-                </Box>
-                <Box>
-                    <VStack className="product-box">
-                        <img src={purpleSweater} style={{borderRadius: 30, padding: 10}}></img>
-                    </VStack>
-                </Box>
-                <Box>
-                    <VStack className="product-box">
-                        <img src={redSweater} style={{borderRadius: 30, padding: 10}}></img>
-                    </VStack>
-                </Box>
+                <ProductBoxNew 
+                className='product-box' 
+                img={tealSweater} 
+                colorScheme="teal" 
+                title="Unisex" 
+                productID="000001"
+                nameOfProduct="Teal Unisex Sweater" 
+                priceOfProduct="19.99" 
+                previousPrice="29.99"/>
+
+                <ProductBoxNew 
+                className='product-box' 
+                img={redSweater} 
+                colorScheme="teal" 
+                title="Unisex" 
+                productID="000002"
+                nameOfProduct="Red Unisex Sweater" 
+                priceOfProduct="19.99"
+                previousPrice="20.99"/>
+
+                <ProductBoxNew 
+                className='product-box' 
+                img={purpleSweater} 
+                colorScheme="teal" 
+                title="Unisex" 
+                productID="000003"
+                nameOfProduct="Purple Unisex Sweater" 
+                priceOfProduct="19.99"
+                previousPrice="20.99"/>
             </SimpleGrid>
         </div>
     );
