@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsthm,amsmath,amssymb,amsfonts}
+\usepackage[margin=1in]{geometry}
+
+\parindent 0pt
+\parskip 3mm
+
+\theoremstyle{definition}
+\newtheorem*{solution}{Solution}
+
+\renewcommand{\pmod}[1]{\mbox{\ $(\mathrm{mod}\ {#1})$}}
+\providecommand{\Leg}[2]{\genfrac{(}{)}{}{}{#1}{#2}}
+
+\newcommand{\CBCMAC}{\text{CBC-MAC}}
+\newcommand{\AHMAC}{\mathrm{AHMAC}}
+\newcommand{\PHMAC}{\mathrm{PHMAC}}
+
+\begin{document}
+
+\begin{center}
+{\bf \Large CPSC 418 / MATH 318 --- Introduction to Cryptography
+
+ASSIGNMENT 3 \qquad Problems 1-5}
+\end{center}
+
+\hrule 	
+
+\textbf{Name:} Theodore Yamit \\
+\textbf{Student ID:} 30141383 (replace by your ID number)
+
+\medskip \hrule
+
+\begin{enumerate} \itemsep 20pt
+
+\item[] \textbf{Problem 1} --- Pre-image resistance versus collision resistance (14 marks)
+
+\begin{enumerate}
+
+\item \begin{enumerate}
+
+\item From the question, we know that h is pre-image resistant, such that given a hash $x$ and $H(M) = x$, it is computationally infeasible to find $M$. We now want to prove that the new hash function $H$ is also pre-image resistant.\\\\
+\textbf{Proof by Contradiction:}\\
+Let's assume that $H$ is NOT pre-image resistant.\\
+This means that we can find a pre-image of $x$, such that we can find $M$ for $H(M) = x$.\\
+
+Since we are able to find a pre-image of $x$ under $H$, and $H(M) = h(M')$, then this means we are also able to find a pre-image under $h$. However, since $h$ is a pre-image resistant has function, then this leads to a contradiction (since if $H$ is no pre-image resistant, then $h$ must also not be pre-image resistant).\\
+
+Thus, our initial assumption of $H$ not being pre-image resistant must be wrong, making $H$ pre-image resistant.\\
+
+\item To prove that $H$ is not collision resistant, we can provide a counter example.\\
+Note: We will be proving this for strong collisions (since this will prove $H$ is not weak-collision resistant by definition as well).\\
+
+Since we a proving for strong collision resistance, it is sufficient to show that it is computationally infeasible to find two distinct $M_1$ and $M_2$ such that $H(M_1) = H(M_2)$.\\
+
+\textbf{Counterexample:}\\
+Let $M_1$ equal any bit string of length $n$, but have the last bit be a 0.\\
+Let $M_2$ be another unique bit string of length $n$, where the first $n-1$ bits are the same $n-1$ bits of $M_1$, except for the last bit, which is a 1. From the description of this question, $M'$ agrees with $M$, except for the last bit, which is changed from 1 to a 0 (in the case it is 1).\\
+
+Thus, we have:
+\begin{align*}
+M_1' &= M_1\\
+M_2' &= M_2 \text{ (Where the last bit of } M_2 \text{ is changed from a 1 to a 0)}
+\end{align*}
+
+We can see that $M_1' = M_2'$, since the first $n-1$ bits of both messages are the same, and $M_2$'s last bit was changed from a 1 to a 0, matching $M_1$.\\\\
+Since $M_1' = M_2'$, we have $h(M_1) = h(M_2)$, and thus, $H(M_1) = H(M_2)$.\\\\
+Since we have found a collision, and $M_1 \ne M_2$, we have proven that $H$ is not a strongly collision resistant hash function (which also makes it not a weakly collision resistant hash function either).\\
+\end{enumerate}
+
+\item \begin{enumerate}
+
+\item  We want to prove that $H$ is collision resistant (strongly collision resistant, since this proves it is also weakly collision resistant). $H$ being strongly collision resistant means that it is computationally infeasiable to find two distinct messages $M_1$ and $M_2$, such that $H(M_1) = H(M_2)$.\\
+
+\textbf{Proof by Contradiction:}
+Let's assume that H is NOT collision resistant.\\
+This means that it is computationally feasible to find two messages $M_1$ and $M_2$, where $M_1 \ne M_2$, such that $H(M_1) = H(M_2)$.\\
+
+Suppose we have two messages $M_1$ and $M_2$.\\
+
+There are two cases to consider such that they land on the same case (since one case prepends 0, and the other cases prepends 1):\\
+
+1. When $M_1$ and $M_2$ are both 0 (both are just the 0 bit).\\
+2. When $M_1$ and $M_2$ are both distinct and not just the 0 bit.\\
+
+\textbf{1st case (Both $M_1$ and $M_2$ are both the 0 bit):}\\
+While this results in the same hash of $1 || 0^n$, which showcases a collision ($H(M_1) = H(M_2)$), $M_1 = M_2$, meaning they aren't distinct messages. This leads to a contradiction. \\
+
+\textbf{2nd case (Both $M_1$ and $M_2$ are both distinct and not just the 0 bit):}\\
+Then $H(M_1) = 0||h(M_1)$ and $H(M_2) = 0||h(M_2)$. Since $M_1 \ne M_2$, we want it such that there is a collision for $h(M_1)$ and $h(M_2)$, such that $h(M_1) = h(M_2)$. However, since $h$ is a collision resistant hash function, this can't happen, and thus we have another contradiction.\\
+
+Since both cases lead to a contradiction, our initial assumption of $H$ not being collision resistant must be wrong, and thus, $H$ is a collision resistant hash function.\\ 
+
+\item Pre-image resistance means that given a hash $x$, such that $H(M) = x$, it is computationally infeasible to find $M$. So we can make a counterexample with a specific $x$.\\
+
+Thus, given a hash $x$, such that $H(M) = x$, suppose that $x$'s string starts with 1. Then we instantly obtain $M$. This is because for $x$ to start with 1, $M$ must be the 0 bit (since 1 is prepended in this case, while 0 is prepended if $M$ is not the 0 bit). Since it is not computationally infeasible in this case, where the hash $x$ starts with 1, then it is possible to find $M$ such that $H(M) = x$ (namely, $M = 0$), which proves that $H$ is not pre-image resistant.
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+
+\item[] \textbf{Problem 2} --- CBC-MAC and one-register CFB-MAC (6 marks)
+
+\begin{enumerate}
+
+\item % 2 (a)
+
+\item % 2 (b)
+
+\end{enumerate}
+
+\newpage
+
+\item[] \textbf{Problem 3} --- Flawed MAC designs (14 marks)
+
+\begin{enumerate}
+
+\item 
+Let's list what we know so far:\\
+- The attacker has a message/PHMAC pair ($M_1$, PHMAC$_K(M_1)$)\\
+- $X$ is an $n$-bit block and $M_2 = M_1||X$
+- We want to compute PHMAC$_K(M_2)$ without the key $K$.\\
+
+Notice that $M_2 = M_1||X$, or more specifically, that $M_2$ starts with $M_1$.\\
+
+From the ITHASH function, we know that this is an iterated hash function that works on a message $M$, consisting of $L$ blocks.\\
+
+We are given a message/PHMAC pair ($M_1$, PHMAC$_K(M_1)$). We can see from the ITHASH function, when the input is $M_1$, such that PHMAC$_K(M_1)$, the returned PHMAC$_K(M_1)$ is the final state when $i = L$.\\
+
+We are given PHMAC$_K(M_1)$ already, which would have already have had the key $K$ appended at the start of the ITHASH algorithm. Since we don't have the key, we can just start the algorithm ITHASH again but starting from the final state of PHMAC$_K(M_1)$, and then just continue processing from the block $X$ (Which makes sense because $M_2 = M_1||X$).
+
+
+\item % 3 (b)
+
+\end{enumerate}
+
+\newpage
+
+\item[] \textbf{Problem 4} --- El Gamal is not semantically secure (12 marks)
+
+\newpage
+
+\item[] \textbf{Problem 5} --- An IND-CPA, but not IND-CCA secure version of RSA (12 marks)
+
+\end{enumerate}
+
+\end{document}
