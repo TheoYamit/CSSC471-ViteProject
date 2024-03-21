@@ -30,11 +30,13 @@ const LoginComponent = () => {
                             type="text"
                             placeHolder="Username"
                             className='username-input'
+                            required
                             />
                             <input
                             type="password"
                             placeHolder="Password"
                             className='username-input'
+                            required
                             />
 
                             <button className="login-submit">

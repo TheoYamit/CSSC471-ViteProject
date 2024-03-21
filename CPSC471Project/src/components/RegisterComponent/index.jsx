@@ -2,6 +2,8 @@ import react from 'react'
 import './registercomponent.css'
 import { Box, HStack, VStack, Text} from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
+import {faUser, faEnvelope, faLocationDot} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const RegisterComponent = () => {
     let navigateLogin = useNavigate();
@@ -23,34 +25,40 @@ const RegisterComponent = () => {
                                     type="text"
                                     placeHolder="First Name"
                                     className="username-input"
+                                    required
                                     />
                                     <input
                                     type="text"
                                     placeHolder="Last Name"
                                     className="username-input"
+                                    required
                                     />
-                                    
+
                                     <input
                                     type="email"
                                     placeHolder="Email Address"
                                     className="username-input"
+                                    required
                                     />
-
+                                    
                                     <input
                                     type="text"
                                     placeHolder="Address"
                                     className="username-input"
+                                    required
                                     />
 
                                     <input
                                     type="text"
                                     placeHolder="Username"
                                     className='username-input'
+                                    required
                                     />
                                     <input
                                     type="password"
                                     placeHolder="Password"
                                     className='username-input'
+                                    required
                                     />
         
                                     <button className="login-submit">
