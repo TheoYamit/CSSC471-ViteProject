@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './fonts/fonts.jsx'
+import '@fontsource/rubik'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
