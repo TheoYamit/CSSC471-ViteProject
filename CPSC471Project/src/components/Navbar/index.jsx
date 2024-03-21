@@ -1,9 +1,21 @@
 import React from 'react';
 import './navbar.css';
+import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faSearch, faSignIn, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 const NavBar = () => {
+    let navigateLogin = useNavigate();
+    const routeChangeLogin  = () => {
+        let path = '/login'
+        navigateLogin(path);
+    }
+
+    let navigateHome = useNavigate();
+    const routeChangeHome = () => {
+        let path = '/'
+        navigateHome(path);
+    }
 
     return (
         <nav className="justify-between w-full z-10 flex items-center px-4 py-2 text-white background-of-navbar">
@@ -11,7 +23,7 @@ const NavBar = () => {
                 <FontAwesomeIcon icon={faBars} style={{color: "#776B5D"}}size="2xl" className="px-4"/>
             </button>
             <div className="flex">
-                <img src={logo} alt="Logo" className="h-20 w-auto" />
+                <img src={logo} alt="Logo" className="h-20 w-auto" onClick={routeChangeHome} style={{cursor: "pointer"}}/>
             </div>
             
 
@@ -23,7 +35,7 @@ const NavBar = () => {
             </div>
 
             <div className="mx-4 flex">
-                <button className="px-4 py-2 rounded transition duration-300 login-button">
+                <button className="px-4 py-2 rounded transition duration-300 login-button" onClick={routeChangeLogin}>
                     <FontAwesomeIcon icon={faSignIn} className="px-2"/>
                     Login
                 </button>
