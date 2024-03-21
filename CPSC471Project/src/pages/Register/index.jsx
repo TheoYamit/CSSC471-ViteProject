@@ -1,14 +1,12 @@
 import React from 'react';
 import './register.css'
 import NavBar from '../../components/Navbar'
-import {AuthProvider} from '../src/contexts/Authorization'
+import RegisterComponent from '../../components/RegisterComponent';
 
 const RegisterPage = () => {
     return (
         <>
-            <NavBar/>
-
-
+            <RegisterComponent/>
         </>
     );
 
