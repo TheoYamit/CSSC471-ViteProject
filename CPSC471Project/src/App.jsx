@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {AuthProvider} from '../src/contexts/Authorization/Authorized'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -18,6 +19,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path='/login' element={<Login/>}/>
+                <Route path='/register' element={<Register/>}/>
             </Routes>
         </AuthProvider>
     </Router>

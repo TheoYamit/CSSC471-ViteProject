@@ -32,7 +32,7 @@ const LoginComponent = () => {
                             className='username-input'
                             />
                             <input
-                            type="text"
+                            type="password"
                             placeHolder="Password"
                             className='username-input'
                             />
@@ -45,7 +45,6 @@ const LoginComponent = () => {
                 </form>
                 <Text>Don't have an account?</Text>
                 <Text as="b" onClick={routeChangeRegister} style={{cursor: 'pointer'}}>Register now</Text>
-                <button className="login-homebutton" onClick={routeChangeHome} style={{cursor: 'pointer'}}>Home <FontAwesomeIcon icon={faHouse} /></button>
             </VStack>
         </div>
     );   
