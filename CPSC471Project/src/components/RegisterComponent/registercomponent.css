@@ -5,3 +5,11 @@
     align-items: center;
     height: 100vh;
 }
+
+.username-input {
+    padding: 1rem;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #EBE3D5;
+    width: 20vw;
+}
