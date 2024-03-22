@@ -18,7 +18,9 @@ db.connect((err) => {
 });
 
 app.post('/register', (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, firstName, lastName, email, address} = req.body;
+
+  const data = [username, password, firstName, lastName, email, address]
   db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, password], (err, results) => {
     if (err) {
       console.error(err);
