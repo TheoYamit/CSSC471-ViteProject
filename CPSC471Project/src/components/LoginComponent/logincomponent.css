@@ -6,12 +6,12 @@
     height: 100vh;
 }
 
-.username-input {
+.login-input {
     padding: 1rem;
     border-radius: 10px;
     border-width: 2px;
     border-color: #EBE3D5;
-    width: 20vw;
+    width: 100%;
 }
 
 .username-input:focus {
@@ -28,7 +28,7 @@
 .login-submit {
     background-color: #B0A695;
     padding: 10px;
-    width: 20vw;
+    width: 100%;
     border-radius: 10px;
 }
 

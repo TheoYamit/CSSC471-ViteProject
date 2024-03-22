@@ -29,13 +29,13 @@ const LoginComponent = () => {
                             <input
                             type="text"
                             placeHolder="Username"
-                            className='username-input'
+                            className='login-input'
                             required
                             />
                             <input
                             type="password"
                             placeHolder="Password"
-                            className='username-input'
+                            className='login-input'  
                             required
                             />
 
