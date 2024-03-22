@@ -14,7 +14,7 @@
     width: 100%;
 }
 
-.username-input:focus {
+.login-input:focus {
     outline: none;
 }
 
