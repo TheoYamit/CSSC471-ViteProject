@@ -1,4 +1,4 @@
-# CSSC471-Project
+# CPSC471-Project
 First, clone repo.
 
 Make sure to install Node.js/npm.
