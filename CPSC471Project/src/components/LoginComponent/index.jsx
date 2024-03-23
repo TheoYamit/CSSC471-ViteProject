@@ -9,7 +9,7 @@ const LoginComponent = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [ alertInfo, setAlertInfo ] = useState({ isVisible: false, status: "", message: "" })
 
-  const {login} = useAuth();
+  const {login, setDetails} = useAuth();
 
 
   let navigateRegister = useNavigate();
@@ -35,7 +35,7 @@ const LoginComponent = () => {
     });
 
     const responseFromServer = await response.json();
-    const { status, message } = responseFromServer;
+    const { status, message, profile} = responseFromServer;
     console.log(responseFromServer);
     setAlertInfo({
       isVisible: true,
@@ -44,8 +44,10 @@ const LoginComponent = () => {
     })
 
 
+
     if (status === "success") {
       login();
+      setDetails(profile);
       setTimeout(() => {
         navigateHome('/');
       }, 2000);

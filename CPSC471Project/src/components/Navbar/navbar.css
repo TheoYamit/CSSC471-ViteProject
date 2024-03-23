@@ -41,3 +41,11 @@
     background-color: #6c7782;;
     outline: none;
 }
+
+.profile-button {
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 50%;
+    background-color: #B0A695;
+}

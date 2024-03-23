@@ -34,15 +34,15 @@ function query(sql, params) {
 app.post('/login', async (req, res) => {
   const {username, password} = req.body;
 
-  const getUserQuery = `SELECT username, password FROM registeredusers WHERE username = ? AND password = ?`;
+  const getUserQuery = `SELECT * FROM registeredusers WHERE username = ? AND password = ?`;
 
-  const data = [username, password];
-  console.log(data);
+  const data = [username, password]
 
   try {
     const results = await query(getUserQuery, data);
+    console.log(results)
     if (results.length > 0) {
-      res.send({status: "success", message: "You're logged in user " + username + ". Redirecting to homepage..."})
+      res.send({status: "success", message: "You're logged in user " + username + ". Redirecting to homepage...", profile: results})
     }
     else {
       console.log("No such user/password combination. Make sure you entered it in correctly.")
