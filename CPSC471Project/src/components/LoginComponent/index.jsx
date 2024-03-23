@@ -3,10 +3,14 @@ import './logincomponent.css'
 import { Box, HStack, VStack, Text, Tooltip, Alert, AlertIcon} from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../contexts/Authorization/Authorized';
 
 const LoginComponent = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [ alertInfo, setAlertInfo ] = useState({ isVisible: false, status: "", message: "" })
+
+  const {login} = useAuth();
+
 
   let navigateRegister = useNavigate();
   const routeChangeRegister = () => {
@@ -38,10 +42,14 @@ const LoginComponent = () => {
       status: status === "success" ? "success" : "error",
       message: message
     })
+
+
     if (status === "success") {
+      login();
       setTimeout(() => {
         navigateHome('/');
       }, 2000);
+      
 
     }
 
