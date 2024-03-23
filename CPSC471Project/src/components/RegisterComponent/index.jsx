@@ -1,6 +1,6 @@
 import './registercomponent.css'
 import React, { useState } from 'react';
-import { Box, VStack, Text, Tooltip } from '@chakra-ui/react'
+import { Box, VStack, Text, Tooltip, Alert, AlertIcon } from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
@@ -10,6 +10,7 @@ const RegisterComponent = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const [alertInfo, setAlertInfo] = useState({ isVisible: false, status: "", message: "" })
   let navigateLogin = useNavigate();
   const routeChangeLogin = () => {
     let path = '/login'
@@ -20,8 +21,7 @@ const RegisterComponent = () => {
   Will probably make it go to the login page so the user can login after. */
   const onSubmit = async (data) => {
     console.log(data)
-
-    const response = await fetch('http://localhost:5173/register', {
+    const response = await fetch('http://localhost:3001/register', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -31,11 +31,26 @@ const RegisterComponent = () => {
 
     const responseFromServer = await response.json();
 
+    const { status, message } = responseFromServer;
+
+    setAlertInfo({
+      isVisible: true,
+      status: status === "success" ? "success" : "error",
+      message: message
+    })
+
+
   };
 
   return (
     <div className="registercomponent">
       <VStack>
+        {alertInfo.isVisible && (
+          <Alert status={alertInfo.status}>
+            <AlertIcon />
+            {alertInfo.message}
+          </Alert>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box p="10" pt="3" pb="5" className="loginbox">
             <VStack>
@@ -86,7 +101,7 @@ const RegisterComponent = () => {
                 />
               </Tooltip>
 
-              <button onClick={onSubmit} type="submit" style={{ backgroundColor: '#B0A695' }} className="register-submit">Register</button>
+              <button className="register-submit">Register</button>
             </VStack>
           </Box>
         </form>
