@@ -38,6 +38,13 @@ const LoginComponent = () => {
       status: status === "success" ? "success" : "error",
       message: message
     })
+    if (status === "success") {
+      setTimeout(() => {
+        navigateHome('/');
+      }, 2000);
+
+    }
+
   };
 
   return (
@@ -49,6 +56,7 @@ const LoginComponent = () => {
             {alertInfo.message}
           </Alert>
         )}
+        
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box p="10" pt="3" pb="5" className="loginbox">
             <VStack>
