@@ -20,7 +20,6 @@ const RegisterComponent = () => {
   /*This is just a temporary onSubmit function right now.
   Will probably make it go to the login page so the user can login after. */
   const onSubmit = async (data) => {
-    console.log(data)
     const response = await fetch('http://localhost:3001/register', {
       method: "POST",
       headers: {

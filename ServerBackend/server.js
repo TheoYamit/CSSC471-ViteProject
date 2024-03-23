@@ -31,13 +31,36 @@ function query(sql, params) {
   });
 }
 
+app.post('/login', async (req, res) => {
+  const {username, password} = req.body;
+
+  const getUserQuery = `SELECT username, password FROM registeredusers WHERE username = ? AND password = ?`;
+
+  const data = [username, password];
+  console.log(data);
+
+  try {
+    const results = await query(getUserQuery, data);
+    if (results.length > 0) {
+      res.send({status: "success", message: "You're logged in user " + username})
+    }
+    else {
+      console.log("No such user/password combination. Make sure you entered it in correctly.")
+      res.status(500).send({ status: "error", message: "No such user/password combination. Make sure you entered it in correctly." });
+    }
+
+  } catch(error) {
+    res.status(500).send({ status: "error", message: "Error occured." });
+  }
+});
+
 app.post('/register', async (req, res) => {
   const { username, password, firstName, lastName, email, address } = req.body;
 
   const insertUserQuery = `INSERT INTO registeredusers (Username, Password, First_name, Last_name, Email, Address) VALUES (?, ?, ?, ?, ?, ?)`
 
   const data = [username, password, firstName, lastName, email, address]
-  console.log(data)
+  console.log(data);
 
    try {
       await query(insertUserQuery, [username, password, firstName, lastName, email, address]);
