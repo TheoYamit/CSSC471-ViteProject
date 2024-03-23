@@ -42,7 +42,7 @@ app.post('/login', async (req, res) => {
   try {
     const results = await query(getUserQuery, data);
     if (results.length > 0) {
-      res.send({status: "success", message: "You're logged in user " + username})
+      res.send({status: "success", message: "You're logged in user " + username + ". Redirecting to homepage..."})
     }
     else {
       console.log("No such user/password combination. Make sure you entered it in correctly.")
