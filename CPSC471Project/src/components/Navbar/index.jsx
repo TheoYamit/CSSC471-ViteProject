@@ -3,7 +3,7 @@ import './navbar.css';
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSearch, faSignIn, faUserPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch, faSignIn, faUserPlus, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/Authorization/Authorized';
 import { Text, Menu, MenuList, MenuButton, MenuItem, Button } from '@chakra-ui/react'
 
@@ -26,7 +26,7 @@ const NavBar = () => {
     const handleScroll = () => {
       const currentScrollY = window.pageYOffset;
 
-      if (currentScrollY > lastScrollY) {
+      if (currentScrollY > lastScrollY && currentScrollY > 96) {
         setDirection('down');
       } else if (currentScrollY < lastScrollY) {
         setDirection('up');
@@ -59,6 +59,11 @@ const NavBar = () => {
     navigate(path);
   }
 
+  const routeChangeProfile = () => {
+    let path = '/profile'
+    navigate(path)
+  }
+
   return (
     <>
       <nav className={`justify-between w-full z-10 flex items-center px-4 py-2 text-white background-of-navbar navbar ${showNav ? '' : 'navbar-hidden'}`}>
@@ -78,17 +83,20 @@ const NavBar = () => {
         </div>
 
         {isAuthenticated ? (
-          <Menu>
-            <Text className="px-2" color="#776B5D">{userDetails.Username}</Text>
-            <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
-              <FontAwesomeIcon icon={faUser} style={{ color: "#F3EEEA" }} />
-            </MenuButton>
-            <MenuList bg="#B0A695">
-              <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Profile Info</MenuItem>
-              <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
-              <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={logout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
+          <>
+            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px"}} size="xl"/>
+            <Menu>
+              <Text className="px-2" color="#776B5D">{userDetails.Username}</Text>
+              <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
+                <FontAwesomeIcon icon={faUser} style={{ color: "#F3EEEA" }} />
+              </MenuButton>
+              <MenuList bg="#B0A695">
+                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
+                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
+                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={logout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
+          </>
         ) :
           <div className="mx-4 flex">
             <button className="px-4 py-2 rounded transition duration-300 login-button" onClick={routeChangeLogin}>
@@ -102,7 +110,7 @@ const NavBar = () => {
           </div >
         }
       </nav >
-      <NavBarSpacer/>
+      <NavBarSpacer />
     </>
 
   );
