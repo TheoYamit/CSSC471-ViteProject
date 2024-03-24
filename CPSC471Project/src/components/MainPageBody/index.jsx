@@ -1,6 +1,6 @@
 import React from 'react';
 import './mainpagebody.css'
-import saleBanner from '../../assets/sale.png'
+import saleBanner from '../../assets/sale.svg'
 import WebFont from 'webfontloader'
 
 const MainPageBody = () => {
@@ -11,7 +11,7 @@ const MainPageBody = () => {
     });
     return (
         <main className="main-page">
-            <div className="relative flex justify-center items-center p-8">
+            <div className="relative flex justify-center items-center">
                 <img src={saleBanner}/>
                 
             </div>
@@ -20,4 +20,4 @@ const MainPageBody = () => {
     );
 };
 
-export default MainPageBody
+export default MainPageBody;
