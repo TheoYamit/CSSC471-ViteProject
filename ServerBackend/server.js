@@ -88,6 +88,10 @@ app.post('/profileinfo', async (req, res) => {
   }
 });
 
+app.post('/products', async (req, res) => {
+  const { ProductID, Name, Description, Price, Image } = req.body;
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

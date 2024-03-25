@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/Authorization/Authorized';
 import { Text, Menu, MenuList, MenuButton, MenuItem, Button } from '@chakra-ui/react'
 
 const NavBar = () => {
-  const { isAuthenticated, userDetails, logout } = useAuth();
+  const { isAuthenticated, isAdmin, userDetails, logout } = useAuth();
   const [showNav, setShowNav] = useState(true);
 
   const [lastScrollY, setLastScrollY] = useState(window.pageYOffset);
@@ -84,9 +84,9 @@ const NavBar = () => {
 
         {isAuthenticated ? (
           <>
-            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px"}} size="xl"/>
+            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null}} size="xl"/>
             <Menu>
-              <Text className="px-2" color="#776B5D">{userDetails.Username}</Text>
+              <Text className="px-2" color="#776B5D">{userDetails.Username}{isAdmin ? " (ADMIN)" : ""}</Text>
               <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
                 <FontAwesomeIcon icon={faUser} style={{ color: "#F3EEEA" }} />
               </MenuButton>

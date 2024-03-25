@@ -6,10 +6,12 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [userDetails, setUserDetails] = useState({Username: "", Password: "", First_name: "", Last_name: "", Email: "", Address: ""})
 
     const login = () => setIsAuthenticated(true);
     const logout = () => setIsAuthenticated(false);
+    const listOfAdmins = ["Triton", "Logan24"];
     const setDetails = (data) => {
         const [{ Username, Password, First_name, Last_name, Email, Address }] = data;
 
@@ -22,10 +24,17 @@ export const AuthProvider = ({ children }) => {
             Address: Address
         });
 
+        if (listOfAdmins.includes(Username)) {
+            setIsAdmin(true);
+        }
+        else {
+            setIsAdmin(false);
+        }
+
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, userDetails, login, logout, setDetails}}>
+        <AuthContext.Provider value={{ isAuthenticated, isAdmin, userDetails, login, logout, setDetails}}>
             {children}
         </AuthContext.Provider>
     );
