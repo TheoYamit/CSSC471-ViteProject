@@ -71,13 +71,13 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D" }} size="2xl" className="px-4" />
         </button>
         <div className="flex">
-          <img src={logo} alt="Logo" className="h-20 w-auto" onClick={routeChangeHome} style={{ cursor: "pointer" }} />
+          <img src={logo} alt="Logo"  onClick={routeChangeHome} style={{ cursor: "pointer" }} />
         </div>
 
 
         <div className="flex-1 mx-4 flex justify-center items-center">
-          <input type="text" placeholder="I am looking for..." className="w-3/4 p-2 rounded border border-inherit h-10 search-bar" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px", borderTopRightRadius: "0", borderBottomRightRadius: "0" }} />
-          <button className="px-5 h-10 border-inherit search-button" style={{ borderTopLeftRadius: "0", borderBottomLeftRadius: "0", borderTopRightRadius: "10px", borderBottomRightRadius: "10px" }}>
+          <input type="text" placeholder="I am looking for..." className="search-bar" />
+          <button className="px-5 h-10 border-inherit search-button">
             <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
           </button>
         </div>
@@ -98,7 +98,7 @@ const NavBar = () => {
             </Menu>
           </>
         ) :
-          <div className="mx-4 flex">
+          <div className="flex">
             <button className="px-4 py-2 rounded transition duration-300 login-button" onClick={routeChangeLogin}>
               <FontAwesomeIcon icon={faSignIn} className="px-2" />
               Login

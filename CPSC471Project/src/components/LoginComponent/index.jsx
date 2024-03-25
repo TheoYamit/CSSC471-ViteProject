@@ -43,8 +43,6 @@ const LoginComponent = () => {
       message: message
     })
 
-
-
     if (status === "success") {
       login();
       setDetails(profile);
