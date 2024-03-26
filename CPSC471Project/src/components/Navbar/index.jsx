@@ -71,20 +71,27 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D" }} size="2xl" className="px-4" />
         </button>
         <div className="flex">
-          <img src={logo} alt="Logo"  onClick={routeChangeHome} style={{ cursor: "pointer" }} />
+          <img src={logo} alt="Logo" onClick={routeChangeHome} style={{ cursor: "pointer" }} />
         </div>
 
-
-        <div className="flex-1 mx-4 flex justify-center items-center">
-          <input type="text" placeholder="I am looking for..." className="search-bar" />
-          <button className="px-5 h-10 border-inherit search-button">
-            <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
-          </button>
-        </div>
+        {isAdmin ?
+          <>
+            <div className="flex-1 mx-4 flex justify-center items-center">
+              
+            </div>
+          </>
+          :
+          <div className="flex-1 mx-4 flex justify-center items-center">
+            <input type="text" placeholder="I am looking for..." className="search-bar" />
+            <button className="px-5 h-10 border-inherit search-button">
+              <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
+            </button>
+          </div>
+        }
 
         {isAuthenticated ? (
           <>
-            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null}} size="xl"/>
+            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
             <Menu>
               <Text className="px-2" color="#776B5D">{userDetails.Username}{isAdmin ? " (ADMIN)" : ""}</Text>
               <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
