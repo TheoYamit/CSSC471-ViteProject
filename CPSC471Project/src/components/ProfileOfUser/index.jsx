@@ -73,7 +73,8 @@ const ProfileOfUser = () => {
                 <Text as="b">Username:</Text>
               </GridItem>
               <GridItem>
-                <Input readOnly="true" {...register("Username")} />
+                <Input readOnly="true" {...register("Username")} 
+                style={{borderColor: "#776B5D"}}/>
               </GridItem>
 
               <GridItem>
@@ -86,6 +87,7 @@ const ProfileOfUser = () => {
                         readOnly={!editMode}
                         type={showPass ? "text" : "password"}
                         {...register("Password", { required: "Password required!" })}
+                        style={{ borderColor: errors.Password ? 'red' : '#776B5D' }}
                       />
                       <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={toggleShowPass}>
@@ -101,7 +103,8 @@ const ProfileOfUser = () => {
               </GridItem>
               <GridItem>
                 <Tooltip isDisabled={!errors.First_name} label={errors.First_name?.message} placement={toolTipSizePlacement} hasArrow>
-                  <Input readOnly={!editMode} {...register("First_name", { required: "First name required!" })} />
+                  <Input readOnly={!editMode} {...register("First_name", { required: "First name required!" })} 
+                  style={{ borderColor: errors.First_name? 'red' : '#776B5D' }}/>
                 </Tooltip>
               </GridItem>
 
@@ -110,7 +113,8 @@ const ProfileOfUser = () => {
               </GridItem>
               <GridItem>
                 <Tooltip isDisabled={!errors.Last_name} label={errors.Last_name?.message} placement={toolTipSizePlacement} hasArrow>
-                  <Input readOnly={!editMode} {...register("Last_name", { required: "Last name required!" })} />
+                  <Input readOnly={!editMode} {...register("Last_name", { required: "Last name required!" })} 
+                  style={{ borderColor: errors.Last_name ? 'red' : '#776B5D' }}/>
                 </Tooltip>
               </GridItem>
 
@@ -119,7 +123,8 @@ const ProfileOfUser = () => {
               </GridItem>
               <GridItem>
                 <Tooltip isDisabled={!errors.Email} label={errors.Email?.message} placement={toolTipSizePlacement} hasArrow>
-                  <Input type="email" readOnly={!editMode} {...register("Email", { required: "Email required!" })} />
+                  <Input type="email" readOnly={!editMode} {...register("Email", { required: "Email required!" })} 
+                  style={{ borderColor: errors.Email ? 'red' : '#776B5D' }}/>
                 </Tooltip>
               </GridItem>
 
@@ -128,7 +133,8 @@ const ProfileOfUser = () => {
               </GridItem>
               <GridItem>
                 <Tooltip isDisabled={!errors.Address} label={errors.Address?.message} placement={toolTipSizePlacement} hasArrow>
-                  <Input readOnly={!editMode} {...register("Address", { required: "Address required!" })} />
+                  <Input readOnly={!editMode} {...register("Address", { required: "Address required!" })} 
+                  style={{ borderColor: errors.Address ? 'red' : '#776B5D' }}/>
                 </Tooltip>
               </GridItem>
             </Grid>
