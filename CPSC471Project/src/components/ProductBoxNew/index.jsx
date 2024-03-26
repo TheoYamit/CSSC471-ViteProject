@@ -1,7 +1,9 @@
 import React from 'react';
+import './productboxnew.css'
 import {Box, VStack, HStack, Stack, Badge, Text} from '@chakra-ui/react'
 
-function ProductBox(props) {
+
+function ProductBoxNew(props) {
     return (
         <Box borderWidth="1px" borderRadius="30px" overflow="hidden">
             <VStack>
@@ -16,8 +18,8 @@ function ProductBox(props) {
                 <Badge borderRadius="full" px="2" colorScheme="teal" fontSize={{ base: "0.8rem", md: "1rem" }}>
                     NEW
                 </Badge>
-                <Text sx={{display: "inline-flex"}} as="i" fontSize={{ base: "sm", md: "md" }}>
-                    {props.genderOfProduct},{props.categoryOfProduct}
+                <Text as="i" fontSize={{ base: "sm", md: "md" }}>
+                    {props.genderOfProduct}, {props.categoryOfProduct}
                 </Text>
                 <Text fontSize={{ base: "xs", md: "sm" }} color="grey">
                     #{props.productID}
@@ -28,11 +30,16 @@ function ProductBox(props) {
                 <Text as="b" fontSize={{ base: "xl", md: "2xl" }}>
                     {props.nameOfProduct}
                 </Text>
-                <Text sx={{display: "inline-flex"}} as="b" fontSize={{ base: "lg", md: "xl" }}>${props.priceOfProduct}</Text>
-                <Text>{props.descOfProduct}</Text>
+                <HStack>
+                    <Text as="del">${props.previousPrice}</Text>
+                    <Badge px="2" colorScheme="red">
+                        SALE
+                    </Badge>
+                    <Text as="b" fontSize={{ base: "lg", md: "xl" }}>${props.priceOfProduct}</Text>
+                </HStack>
             </VStack>
         </Box>
     );
 };
 
-export default ProductBox;
+export default ProductBoxNew;

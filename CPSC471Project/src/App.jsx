@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import AdminProductsPage from './pages/AdminPages/AdminProductsPage'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {AuthProvider} from '../src/contexts/Authorization/Authorized'
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/profile' element={<Profile/>}/>
+                <Route path='/adminproducts' element={<AdminProductsPage/>}/>
             </Routes>
         </AuthProvider>
     </Router>
