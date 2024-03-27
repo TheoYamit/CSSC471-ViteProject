@@ -3,6 +3,7 @@ import './adminproductspage.css';
 import NavBar from '../../../components/Navbar';
 import { Flex, Box, HStack, VStack, Image, Button, useBreakpointValue } from '@chakra-ui/react';
 import ProductManagement from '../../../components/AdminStuff/ProductManagement';
+import EditProductManagement from '../../../components/AdminStuff/EditProductManagement';
 
 
 const AdminProductsPage = () => {
@@ -40,6 +41,7 @@ const AdminProductsPage = () => {
       </>
       :
       <>
+        <EditProductManagement/>
       </>
       }
     </>
