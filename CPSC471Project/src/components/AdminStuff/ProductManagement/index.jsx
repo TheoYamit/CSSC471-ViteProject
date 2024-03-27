@@ -5,7 +5,7 @@ import {
   Textarea, Text, NumberInput, NumberInputStepper, NumberInputField, NumberIncrementStepper, NumberDecrementStepper, Select,
   Alert, AlertIcon
 } from '@chakra-ui/react';
-import ProductBox from '../../ProductBox';
+import ProductBoxNew from '../../ProductBoxNew';
 import temp from '../../../assets/temp.svg';
 
 const ProductManagement = () => {
@@ -68,7 +68,6 @@ const ProductManagement = () => {
       status: status === "success" ? "success" : "error",
       message: message
     })
-    console.log(alertInfo);
   };
 
   const handleSubmit = async (event) => {
@@ -76,13 +75,14 @@ const ProductManagement = () => {
   
       await onSubmit(productDetails)
     }
+  
 
   const direction = useBreakpointValue({ base: "column", lg: "row" })
   return (
     <>
       <Flex direction={direction} justifyContent="space-between" alignItems="center" p={5}>
         <Box w={{ base: "85%", lg: "50%" }} p={3}>
-          <ProductBox
+          <ProductBoxNew
             productID={productDetails.productID == "" ? "RandomID" : productDetails.productID}
             nameOfProduct={productDetails.nameOfProduct == "" ? <Text>Random Name</Text> : productDetails.nameOfProduct}
             descOfProduct={productDetails.descOfProduct == "" ? <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing

@@ -107,6 +107,23 @@ app.post('/addproduct', upload.single('imageOfProduct'), async (req, res) => {
     }
 });
 
+app.post('/getproduct', async (req, res) => {
+    const { productID } = req.body;
+    const getProductQuery = `SELECT * FROM products WHERE ProductID = ?`;
+    data = [productID];
+    console.log(data);
+    try {
+        const results = await query(getProductQuery, data);
+        console.log(results);
+        if (results.length == 0) {
+            throw Error;
+        }
+        res.send({status: "success", message: "Obtained product info. Loading info...", product: results})
+    } catch(error) {
+        res.status(500).send({status: "error", message: "Could not find Product ID!"});
+    }
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

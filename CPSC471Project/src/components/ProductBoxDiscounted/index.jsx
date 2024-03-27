@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, VStack, HStack, Stack, Badge, Text } from '@chakra-ui/react'
 
-function ProductBox(props) {
+function ProductBoxDiscounted(props) {
   return (
     <Box borderWidth="1px" borderRadius="30px" overflow="hidden">
       <VStack>
@@ -25,11 +25,17 @@ function ProductBox(props) {
         <Text as="b" fontSize={{ base: "xl", md: "2xl" }}>
           {props.nameOfProduct}
         </Text>
-        <Text sx={{ display: "inline-flex" }} as="b" fontSize={{ base: "lg", md: "xl" }}>${props.priceOfProduct}</Text>
+        <Text sx={{ display: "inline-flex" }} as="del" fontSize={{ base: "lg", md: "xl" }}>${props.previousPrice}</Text>
+        <HStack>
+          <Badge colorScheme="red">
+            SALE
+          </Badge>
+          <Text sx={{ display: "inline-flex"}} as="b" fontSize={{ base: "lg", md: "xl"}}>${props.discountedPrice}</Text>
+        </HStack>
         <Text>{props.descOfProduct}</Text>
       </VStack>
     </Box>
   );
 };
 
-export default ProductBox;
+export default ProductBoxDiscounted;
