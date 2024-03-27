@@ -9,3 +9,6 @@ Then do:
 1. cd CPSC471Project
 2. npm install
 3. npm run dev
+
+Test Admin account: (User: Triton, Pass: Triton24)
+Test Customer account: (User: David123, Pass: 123456789)
