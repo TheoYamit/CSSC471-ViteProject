@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer')
+const upload = multer({storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 }})
 const bodyParser = require('body-parser')
 const mysql = require('mysql2');
 
-const app = express();
+const app = express({limit: "1000mb"});
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173'
@@ -88,8 +90,21 @@ app.post('/profileinfo', async (req, res) => {
   }
 });
 
-app.post('/products', async (req, res) => {
-  const { ProductID, Name, Description, Price, Image } = req.body;
+app.post('/addproduct', upload.single('imageOfProduct'), async (req, res) => {
+    const { productID, nameOfProduct, descOfProduct, priceOfProduct, categoryOfProduct, genderOfProduct } = req.body;
+    const imageOfProduct = req.file.buffer;
+    
+    const addProductQuery = `INSERT INTO  products(ProductID, Name, Description, Price, Image, Category, Gender, isNew, isDiscounted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+    const data = [productID, nameOfProduct, descOfProduct, priceOfProduct, imageOfProduct, categoryOfProduct, genderOfProduct, 1, 0]
+    console.log(data);
+    try  {
+        await query(addProductQuery, data);
+        res.send({status:"success", message: "Product successfully added!"})
+    } catch(error) {
+        console.log(error);
+        res.status(500).send({status:"error", message: "Error adding product!"})
+    }
 });
 
 
