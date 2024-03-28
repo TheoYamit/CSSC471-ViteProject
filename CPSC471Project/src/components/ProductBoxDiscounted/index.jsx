@@ -25,12 +25,12 @@ function ProductBoxDiscounted(props) {
         <Text as="b" fontSize={{ base: "xl", md: "2xl" }}>
           {props.nameOfProduct}
         </Text>
-        <Text sx={{ display: "inline-flex" }} as="del" fontSize={{ base: "lg", md: "xl" }}>${props.previousPrice}</Text>
         <HStack>
-          <Badge colorScheme="red">
+          <Text as="del">${props.previousPrice}</Text>
+          <Badge px="2" colorScheme="red">
             SALE
           </Badge>
-          <Text sx={{ display: "inline-flex"}} as="b" fontSize={{ base: "lg", md: "xl"}}>${props.discountedPrice}</Text>
+          <Text sx={{ display: "inline-flex" }} as="b" fontSize={{ base: "lg", md: "xl" }}>${props.discountedPrice}</Text>
         </HStack>
         <Text>{props.descOfProduct}</Text>
       </VStack>

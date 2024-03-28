@@ -7,45 +7,42 @@ import EditProductManagement from '../../../components/AdminStuff/EditProductMan
 
 
 const AdminProductsPage = () => {
-  const [isAddProduct, setIsAddProduct] = useState(false);
+  const [isAddProduct, setIsAddProduct] = useState(null);
   const [showFlex, setShowFlex] = useState(true);
+  
   const toggleShowFlex = () => {
     setShowFlex(!showFlex);
   };
 
-  const toggleSetIsAddProduct = () => {
-    toggleShowFlex();
-    setIsAddProduct(!isAddProduct);
-  }
+  const toggleSetIsAddProduct = (value) => {
+    setIsAddProduct(value);
+    setShowFlex(false);
+  };
 
-  const direction = useBreakpointValue({ base: "column", lg: "row" })
-  const heightOfButtons = useBreakpointValue({base: "300px", lg: "620px"})
+  const direction = useBreakpointValue({ base: "column", lg: "row" });
+  const heightOfButtons = useBreakpointValue({base: "300px", lg: "620px"});
+
   return (
     <>
       <NavBar />
-      <Flex display={!showFlex ? "none": null} Flex direction={direction} justifyContent="space-between" alignItems="center" p={5}>
-        <Box w={{ base: "full", lg: "50%" }} p={3}>
-          <Button borderRadius="20" onClick={toggleSetIsAddProduct} w="full" h={heightOfButtons}>
-            ADD PRODUCTS
-          </Button>
-        </Box>
-        <Box w={{ base: "full", lg: "50%" }} p={3}>
-          <Button borderRadius="20" onClick={toggleShowFlex} w="full" h={heightOfButtons}>
-            EDIT EXISTING PRODUCTS
-          </Button>
-        </Box>
-      </Flex>
-      {isAddProduct ? 
-      <>
-        <ProductManagement/>
-      </>
-      :
-      <>
-        <EditProductManagement/>
-      </>
-      }
+      {showFlex && (
+        <Flex direction={direction} justifyContent="space-between" alignItems="center" p={5}>
+          <Box w={{ base: "full", lg: "50%" }} p={3}>
+            <Button borderRadius="20" onClick={() => toggleSetIsAddProduct(true)} w="full" h={heightOfButtons}>
+              ADD PRODUCTS
+            </Button>
+          </Box>
+          <Box w={{ base: "full", lg: "50%" }} p={3}>
+            <Button borderRadius="20" onClick={() => toggleSetIsAddProduct(false)} w="full" h={heightOfButtons}>
+              EDIT EXISTING PRODUCTS
+            </Button>
+          </Box>
+        </Flex>
+      )}
+      {isAddProduct === true && <ProductManagement/>}
+      {isAddProduct === false && <EditProductManagement/>}
     </>
   );
-}
+};
 
 export default AdminProductsPage;
