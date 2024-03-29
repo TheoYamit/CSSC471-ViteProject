@@ -35,7 +35,10 @@ const MainPageBodyTwo = () => {
           '-ms-overflow-style': 'none',
           'scrollbar-width': 'none',
         }}
-        scrollBehaviour="smooth">
+        scrollBehaviour="smooth"
+        width="100vw"
+        maxW="100%"
+      >
 
         {console.log(products)}
         {products.map((product) => {
@@ -48,20 +51,23 @@ const MainPageBodyTwo = () => {
           const blob = new Blob([arrayBufferView], { type: "image/png" });
           const imageUrl = URL.createObjectURL(blob);
           return (
-            <Component px={5}
-              key={product.ProductID}
-              productID={product.ProductID}
-              nameOfProduct={product.Name}
-              descOfProduct={product.Description}
-              priceOfProduct={product.Price}
-              imageOfProduct={imageUrl}
-              categoryOfProduct={product.Category}
-              genderOfProduct={product.Gender}
-              isNew={product.IsNew}
-              isDiscounted={product.IsDiscounted}
-              previousPrice={product.Price}
-              discountedPrice={product.DiscountedPrice}
-            />
+            <Box px={2} width="400px" flexShrink={0} >
+              <Component px={5}
+                key={product.ProductID}
+                productID={product.ProductID}
+                nameOfProduct={product.Name}
+                descOfProduct={product.Description}
+                priceOfProduct={product.Price}
+                imageOfProduct={imageUrl}
+                categoryOfProduct={product.Category}
+                genderOfProduct={product.Gender}
+                isNew={product.IsNew}
+                isDiscounted={product.IsDiscounted}
+                previousPrice={product.Price}
+                discountedPrice={product.DiscountedPrice}
+
+              />
+            </Box>
           );
         })}
 
