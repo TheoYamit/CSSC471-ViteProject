@@ -5,7 +5,26 @@ import logo from '../../assets/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faSearch, faSignIn, faUserPlus, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/Authorization/Authorized';
-import { Text, Menu, MenuList, MenuButton, MenuItem, Button } from '@chakra-ui/react'
+import {
+  Flex, Box, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button, useDisclosure,
+} from '@chakra-ui/react'
+import { Drawer } from '@mui/material';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+
+
+const categories = [
+  'Male',
+  'Female',
+  'Unisex',
+  'Clothing',
+  'Shoes',
+  'Beauty Products',
+];
 
 const NavBar = () => {
   const { isAuthenticated, isAdmin, userDetails, logout } = useAuth();
@@ -13,6 +32,12 @@ const NavBar = () => {
 
   const [lastScrollY, setLastScrollY] = useState(window.pageYOffset);
   const [direction, setDirection] = useState('');
+
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  }
 
   const NavBarSpacer = () => {
     return (
@@ -66,60 +91,110 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className={`justify-between w-full z-10 flex items-center px-4 py-2 text-white background-of-navbar navbar ${showNav ? '' : 'navbar-hidden'}`}>
-        <button>
-          <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D" }} size="2xl" className="px-4" />
-        </button>
-        <div className="flex">
-          <img src={logo} alt="Logo" onClick={routeChangeHome} style={{ cursor: "pointer" }} />
-        </div>
+      <Flex bg="#F3EEEA" py={4} px={2} alignItems="center"
+        as="nav"
+        align="center"
+        color="white"
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        zIndex="banner"
+        style={{ transform: showNav ? 'translateY(0)' : 'translateY(-100%)', transition: 'transform 0.3s ease-in-out' }}
+      >
+        <HStack>
+          <Button onClick={toggleDrawer} w="auto" px="0" bg="transparent" _hover={{ bg: "#EBE3D5" }}>
+            <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D", padding: "0" }} size="2xl" className="px-4" />
+          </Button>
 
+          <Image src={logo} onClick={routeChangeHome} sx={{ cursor: "pointer" }} />
+        </HStack>
+
+        <Spacer />
         {isAdmin ?
           <>
-            <div className="flex-1 mx-4 flex justify-center items-center">
-              
-            </div>
+            <HStack spacing={0}>
+              <Input display="none" borderColor="grey" _hover={{ borderColor: "grey" }} focusBorderColor="grey" borderRight="none" placeholder="I'm looking for..." sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}></Input>
+              <Button display="none" border="solid 1px" borderColor="grey" _hover={{ bg: "#EBE3D5" }} sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
+                <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
+              </Button>
+            </HStack>
           </>
           :
-          <div className="flex-1 mx-4 flex justify-center items-center">
-            <input type="text" placeholder="I am looking for..." className="search-bar" />
-            <button className="px-5 h-10 border-inherit search-button">
-              <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
-            </button>
-          </div>
-        }
-
-        {isAuthenticated ? (
           <>
-            <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
-            <Menu>
-              <Text className="px-2" color="#776B5D">{userDetails.Username}{isAdmin ? " (ADMIN)" : ""}</Text>
-              <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
-                <FontAwesomeIcon icon={faUser} style={{ color: "#F3EEEA" }} />
-              </MenuButton>
-              <MenuList bg="#B0A695">
-                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
-                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
-                <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={logout}>Logout</MenuItem>
-              </MenuList>
-            </Menu>
+            <HStack spacing={0}>
+              <Input id="search-bar" borderColor="grey" _hover={{ borderColor: "grey" }} focusBorderColor="grey" borderRight="none" placeholder="I'm looking for..." sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}></Input>
+              <Button id="search-button" bg="transparent" border="solid 1px" borderColor="grey" _hover={{ bg: "#EBE3D5" }} sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
+                <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
+              </Button>
+            </HStack>
           </>
-        ) :
-          <div className="flex">
-            <button className="px-4 py-2 rounded transition duration-300 login-button" onClick={routeChangeLogin}>
-              <FontAwesomeIcon icon={faSignIn} className="px-2" />
-              Login
-            </button>
-            <button className="ml-2 px-4 py-2 rounded transition duration-300 register-button" onClick={routeChangeRegister}>
-              <FontAwesomeIcon icon={faUserPlus} className="px-2" />
-              Register
-            </button>
-          </div >
         }
-      </nav >
-      <NavBarSpacer />
-    </>
 
+        <Spacer />
+
+        {isAuthenticated ?
+          (
+            <>
+              <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
+              <Menu>
+                <Text className="px-2" color="#776B5D">{userDetails.Username}{isAdmin ? " (ADMIN)" : ""}</Text>
+                <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
+                  <FontAwesomeIcon icon={faUser} style={{ color: "#F3EEEA" }} />
+                </MenuButton>
+                <MenuList bg="#B0A695">
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={logout}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </>
+          )
+          :
+          <>
+            <HStack >
+              <Button onClick={routeChangeLogin} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="6rem">
+                Login
+              </Button>
+              <Button onClick={routeChangeRegister} bg="#776B5D" color="white" _hover={{ bg: "#8894a2" }} w="7rem">
+                Register
+              </Button>
+            </HStack>
+          </>
+        }
+
+      </Flex>
+      <NavBarSpacer />
+      <Drawer
+        open={open}
+        onClose={toggleDrawer}
+        ModalProps={{ disableScrollLock: true }}
+        anchor="left"
+        sx={{
+          width: 250,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 250,
+            boxSizing: 'border-box',
+            backgroundColor: '#F3EEEA',
+          },
+        }}
+      >
+        <Flex justifyContent="center" sx={{ padding: 2 }}>
+          <Typography variant="h6" sx={{ color: '#333' }}>Urban Weave</Typography>
+        </Flex>
+        <Divider />
+        <Button>Men</Button>
+        <Button>Women</Button>
+        <Button>Unisex</Button>
+        <Divider />
+        <Button>Clothing</Button>
+        <Button>Shoes</Button>
+        <Button>Beauty Products</Button>
+      </Drawer>
+
+
+    </>
   );
 };
 

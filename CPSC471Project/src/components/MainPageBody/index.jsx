@@ -1,6 +1,9 @@
 import React from 'react';
 import './mainpagebody.css'
 import saleBanner from '../../assets/sale.svg'
+import {
+  Flex, Box, Spacer, HStack, Image
+} from '@chakra-ui/react'
 import WebFont from 'webfontloader'
 
 const MainPageBody = () => {
@@ -13,9 +16,9 @@ const MainPageBody = () => {
 
   return (
     <main className="main-page">
-      <div className="relative flex justify-center items-center">
-        <img src={saleBanner} />
-      </div>
+      <Flex justifyContent="center" alignItems="center">
+        <Image src={saleBanner} w="100%"/>
+      </Flex> 
     </main>
 
   );

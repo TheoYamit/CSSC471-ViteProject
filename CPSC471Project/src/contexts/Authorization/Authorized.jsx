@@ -10,7 +10,10 @@ export const AuthProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState({Username: "", Password: "", First_name: "", Last_name: "", Email: "", Address: ""})
 
     const login = () => setIsAuthenticated(true);
-    const logout = () => setIsAuthenticated(false);
+    const logout = () => {
+        setIsAuthenticated(false);
+        setIsAdmin(false);
+    }
     const listOfAdmins = ["Triton", "Logan24"];
     const setDetails = (data) => {
         const [{ Username, Password, First_name, Last_name, Email, Address }] = data;
