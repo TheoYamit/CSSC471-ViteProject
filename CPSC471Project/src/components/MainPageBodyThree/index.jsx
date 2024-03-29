@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import './mainpagebodytwo.css';
+import './mainpagebodythree.css';
 import { Flex, Box, Text } from '@chakra-ui/react'
 import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew'
 import ProductBoxDiscounted from '../ProductBoxDiscounted';
 import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 
-const MainPageBodyTwo = () => {
+const MainPageBodyThree = () => {
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProductsCategory = async (data) => {
-      const response = await fetch('http://localhost:3001/getproductclothing', {
+    const fetchProductsShoes = async (data) => {
+      const response = await fetch('http://localhost:3001/getproductshoes', {
         method: "GET"
       });
       const responseFromServer = await response.json();
       setProducts(responseFromServer.products);
     };
-    fetchProductsCategory();
+    fetchProductsShoes();
   }, []);
 
   return (
     <>
-      <Text px={5} py={5} fontSize="5xl" fontFamily="adineue PRO Bold" bg="#F3EEEA">Our Popular Clothing</Text>
+      <Text px={5} py={5} fontSize="5xl" fontFamily="adineue PRO Bold" bg="#F3EEEA">Our Popular Shoes</Text>
       <Flex
-        className="mainpagebodytwo"
+        className="mainpagebodythree"
         direction="row"
         overflowX="scroll"
         sx={{
@@ -37,8 +37,7 @@ const MainPageBodyTwo = () => {
         }}
         scrollBehaviour="smooth"
         width="100vw"
-        maxW="100%"
-      >
+        maxW="100%">
 
         {console.log(products)}
         {products.map((product) => {
@@ -70,10 +69,9 @@ const MainPageBodyTwo = () => {
             </Box>
           );
         })}
-
       </Flex>
     </>
   );
 };
 
-export default MainPageBodyTwo;
+export default MainPageBodyThree;

@@ -197,6 +197,21 @@ app.get('/getproductclothing', async(req, res) => {
 
 });
 
+app.get('/getproductshoes', async(req, res) => {
+
+    const shoesProdQuery = 'SELECT * FROM products WHERE Category = ?'
+    const data = ["Shoes"];
+
+    try {
+        const results = await query(shoesProdQuery, data);
+        res.send({status: "success", message: "Products sent!", products: results});
+    } catch(error) {
+        console.log(error);
+        res.status(500).send({status: "error", message: "Error occurred"});
+    }
+
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
