@@ -2,3 +2,18 @@
   font-family: 'AdihausDIN';
   src: url('./AdihausDIN.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'AdiHaus Bold';
+  src: url('./AdiHaus Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'adineue PRO';
+  src: url('./adineue PRO.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'adineue PRO Bold';
+  src: url('./adineue PRO Bold.ttf') format('truetype');
+}
