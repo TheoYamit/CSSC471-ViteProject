@@ -1,47 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './mainpagebodytwo.css';
-import { Box, SimpleGrid, Stack, HStack, VStack, Badge, Text} from '@chakra-ui/react'
-import tealSweater from '../../assets/products1/tealsweater.png'
-import redSweater from '../../assets/products1/redsweater.png'
-import purpleSweater from '../../assets/products1/purplesweater.png'
+import {Flex, Box, SimpleGrid, Stack, HStack, VStack, Badge, Text } from '@chakra-ui/react'
+import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew'
+import ProductBoxDiscounted from '../ProductBoxDiscounted';
+import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 
 const MainPageBodyTwo = () => {
-    return (
-        <div className="mainpagebodytwo">
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5} px={6} py={6}>
-                <ProductBoxNew 
-                    className='product-box' 
-                    img={tealSweater} 
-                    colorScheme="teal" 
-                    title="Unisex" 
-                    productID="000001"
-                    nameOfProduct="Teal Unisex Sweater" 
-                    priceOfProduct="19.99" 
-                    previousPrice="29.99"/>
 
-                <ProductBoxNew 
-                    className='product-box' 
-                    img={redSweater} 
-                    colorScheme="teal" 
-                    title="Unisex" 
-                    productID="000002"
-                    nameOfProduct="Red Unisex Sweater" 
-                    priceOfProduct="19.99"
-                    previousPrice="20.99"/>
+  const [productDetails, setProductDetails] = useState();
+  return (
+    <>
+      <Flex 
+      className="mainpagebodytwo"
+      direction="row" 
+      overflowX="scroll" 
+      sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+          '-ms-overflow-style': 'none', 
+          'scrollbar-width': 'none',
+        }}
+      scrollBehaviour="smooth">
 
-                <ProductBoxNew 
-                    className='product-box' 
-                    img={purpleSweater} 
-                    colorScheme="teal" 
-                    title="Unisex" 
-                    productID="000003"
-                    nameOfProduct="Purple Unisex Sweater" 
-                    priceOfProduct="19.99"
-                    previousPrice="20.99"/>
-            </SimpleGrid>
-        </div>
-    );
+      </Flex>
+    </>
+  );
 };
 
 export default MainPageBodyTwo;

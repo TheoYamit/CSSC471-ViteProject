@@ -10,7 +10,7 @@
   top: -80px;
 }
 .navbar-spacer {
-    height: 80px;
+    height: 82px;
 }
 
 .search-bar {
@@ -37,6 +37,13 @@
     display: none;
   }
 }
+
+@media (max-width: 720px) {
+  #search-bar, #search-button {
+    display: none;
+  }
+}
+
 
 .background-of-navbar {
     background-color: #F3EEEA;
