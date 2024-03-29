@@ -2,6 +2,7 @@ import React from 'react';
 import NavBar from '../../components/Navbar';
 import MainPageBody from '../../components/MainPageBody';
 import MainPageBodyTwo from '../../components/MainPageBodyTwo';
+import MainPageBodyThree from '../../components/MainPageBodyThree';
 import AdminProduct from '../../components/AdminStuff/AdminProduct';
 import AdminOrders from '../../components/AdminStuff/AdminOrders';
 import AdminReviews from '../../components/AdminStuff/AdminRewiews'
@@ -23,6 +24,7 @@ const Home = () => {
         <NavBar />
         <MainPageBody />
         <MainPageBodyTwo />
+        <MainPageBodyThree />
       </>
       }
     </>
