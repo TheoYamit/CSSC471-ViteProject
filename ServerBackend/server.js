@@ -124,6 +124,22 @@ app.post('/getproduct', async (req, res) => {
     }
 });
 
+app.post('/getproductscategory', async (req, res) => {
+    const { categoryOfProduct } = req.body;
+
+    const queryForCategory = `SELECT * FROM products WHERE Category = ?`
+
+    data = [categoryOfProduct]
+
+    try {
+        const results = await query(queryForCategory, categoryOfProduct);
+        res.send({status: "success", message: "Successfuly got products for the given category.", products: results});
+    } catch(error) {
+        res.status(500).send({status: "error", message: "Error occured."});
+    }
+
+});
+
 app.post('/editproduct', upload.single('imageOfProduct'), async (req, res) => {
     console.log(req.body)
     const { productID, nameOfProduct, descOfProduct, priceOfProduct, categoryOfProduct, genderOfProduct, isNew, isDiscounted } = req.body;
@@ -165,6 +181,21 @@ app.post('/editproduct', upload.single('imageOfProduct'), async (req, res) => {
 
 
 })
+
+app.get('/getproductclothing', async(req, res) => {
+
+    const clothingProdQuery = 'SELECT * FROM products WHERE Category = ?'
+    const data = ["Clothing"];
+
+    try {
+        const results = await query(clothingProdQuery, data);
+        res.send({status: "success", message: "Products sent!", products: results});
+    } catch(error) {
+        console.log(error);
+        res.status(500).send({status: "error", message: "Error occurred"});
+    }
+
+});
 
 
 const PORT = process.env.PORT || 3001;

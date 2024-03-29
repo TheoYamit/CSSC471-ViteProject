@@ -3,8 +3,8 @@ import './font.css'
 
 const theme = extendTheme({
     fonts: {
-        heading: `'AdihausDIN', sans-serif`,
-        body: `'AdihausDIN', sans-serif`
+        heading: `'AdihausDIN', AdiHaus Bold, adineue PRO`,
+        body: `'AdihausDIN', AdiHaus Bold, adineue PRO`
     }
 });
 
