@@ -14,7 +14,7 @@ function ProductBoxDiscounted(props) {
 
       <HStack spacing={2} px={{ base: 2, md: 4 }} py={2} justifyContent="start">
         <Text sx={{ display: "inline-flex" }} as="i" fontSize={{ base: "sm", md: "md" }}>
-          {props.genderOfProduct},{props.categoryOfProduct}
+          {props.genderOfProduct}, {props.categoryOfProduct}
         </Text>
         <Text fontSize={{ base: "xs", md: "sm" }} color="grey">
           #{props.productID}
