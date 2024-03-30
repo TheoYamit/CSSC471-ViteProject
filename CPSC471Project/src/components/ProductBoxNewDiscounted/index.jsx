@@ -4,12 +4,12 @@ import { Box, VStack, HStack, Stack, Badge, Text } from '@chakra-ui/react'
 
 function ProductBoxNewDiscounted(props) {
   return (
-    <Box borderWidth="1px" borderRadius="30px" overflow="hidden">
+    <Box borderWidth="1px" overflow="hidden" _hover={{border: "1px solid"}}>
       <VStack>
         <img
           src={props.imageOfProduct}
           alt="Product"
-          style={{ width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
+          style={{ width: '100%'}}
         />
       </VStack>
 

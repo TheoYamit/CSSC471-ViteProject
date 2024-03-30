@@ -19,7 +19,7 @@ function ProductBoxNew(props) {
           NEW
         </Badge>
         <Text sx={{ display: "inline-flex" }} as="i" fontSize={{ base: "sm", md: "md" }}>
-          {props.genderOfProduct},{props.categoryOfProduct}
+          {props.genderOfProduct}, {props.categoryOfProduct}
         </Text>
         <Text fontSize={{ base: "xs", md: "sm" }} color="grey">
           #{props.productID}

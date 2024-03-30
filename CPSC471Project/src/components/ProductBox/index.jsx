@@ -3,18 +3,18 @@ import { Box, VStack, HStack, Stack, Badge, Text } from '@chakra-ui/react'
 
 function ProductBox(props) {
   return (
-    <Box borderWidth="1px" borderRadius="30px" overflow="hidden">
+    <Box borderWidth="1px" overflow="hidden" _hover={{border: "1px solid"}}>
       <VStack>
         <img
           src={props.imageOfProduct}
           alt="Product"
-          style={{ width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
+          style={{ width: '100%'}}
         />
       </VStack>
 
       <HStack spacing={2} px={{ base: 2, md: 4 }} py={2} justifyContent="start">
         <Text sx={{ display: "inline-flex" }} as="i" fontSize={{ base: "sm", md: "md" }}>
-          {props.genderOfProduct},{props.categoryOfProduct}
+          {props.genderOfProduct}, {props.categoryOfProduct}
         </Text>
         <Text fontSize={{ base: "xs", md: "sm" }} color="grey">
           #{props.productID}

@@ -103,9 +103,11 @@ const NavBar = () => {
         style={{ transform: showNav ? 'translateY(0)' : 'translateY(-100%)', transition: 'transform 0.3s ease-in-out' }}
       >
         <HStack>
-          <Button onClick={toggleDrawer} w="auto" px="0" bg="transparent" _hover={{ bg: "#EBE3D5" }}>
-            <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D", padding: "0" }} size="2xl" className="px-4" />
-          </Button>
+
+          {!isAdmin &&
+            <Button onClick={toggleDrawer} w="auto" px="0" bg="transparent" _hover={{ bg: "#EBE3D5" }}>
+              <FontAwesomeIcon icon={faBars} style={{ color: "#776B5D", padding: "0" }} size="2xl" className="px-4" />
+            </Button>}
 
           <Image src={logo} onClick={routeChangeHome} sx={{ cursor: "pointer" }} />
         </HStack>
@@ -192,8 +194,6 @@ const NavBar = () => {
         <Button>Shoes</Button>
         <Button>Beauty Products</Button>
       </Drawer>
-
-
     </>
   );
 };
