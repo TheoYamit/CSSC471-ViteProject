@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './mainpagebodytwo.css';
 import { Flex, Box, Text } from '@chakra-ui/react'
 import ProductBox from '../ProductBox';
@@ -9,7 +10,7 @@ import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 const MainPageBodyTwo = () => {
 
   const [products, setProducts] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProductsCategory = async (data) => {
       const response = await fetch('http://localhost:3001/getproductclothing', {
@@ -52,21 +53,23 @@ const MainPageBodyTwo = () => {
           const imageUrl = URL.createObjectURL(blob);
           return (
             <Box px={2} width="400px" flexShrink={0} >
-              <Component px={5}
-                key={product.ProductID}
-                productID={product.ProductID}
-                nameOfProduct={product.Name}
-                descOfProduct={product.Description}
-                priceOfProduct={product.Price}
-                imageOfProduct={imageUrl}
-                categoryOfProduct={product.Category}
-                genderOfProduct={product.Gender}
-                isNew={product.IsNew}
-                isDiscounted={product.IsDiscounted}
-                previousPrice={product.Price}
-                discountedPrice={product.DiscountedPrice}
+              <Box sx={{ cursor: "pointer" }} onClick={() => navigate(`/product/${product.ProductID}`)}>
+                <Component px={5}
+                  key={product.ProductID}
+                  productID={product.ProductID}
+                  nameOfProduct={product.Name}
+                  descOfProduct={product.Description}
+                  priceOfProduct={product.Price}
+                  imageOfProduct={imageUrl}
+                  categoryOfProduct={product.Category}
+                  genderOfProduct={product.Gender}
+                  isNew={product.IsNew}
+                  isDiscounted={product.IsDiscounted}
+                  previousPrice={product.Price}
+                  discountedPrice={product.DiscountedPrice}
 
-              />
+                />
+              </Box>
             </Box>
           );
         })}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './mainpagebodyfour.css';
+import { useNavigate } from 'react-router-dom';
 import { Flex, Box, Text } from '@chakra-ui/react'
 import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew'
@@ -9,6 +10,7 @@ import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 const MainPageBodyFour = () => {
 
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductsBeauty = async (data) => {
@@ -51,20 +53,23 @@ const MainPageBodyFour = () => {
           const imageUrl = URL.createObjectURL(blob);
           return (
             <Box px={2} width="400px" flexShrink={0} >
-              <Component px={5}
-                key={product.ProductID}
-                productID={product.ProductID}
-                nameOfProduct={product.Name}
-                descOfProduct={product.Description}
-                priceOfProduct={product.Price}
-                imageOfProduct={imageUrl}
-                categoryOfProduct={product.Category}
-                genderOfProduct={product.Gender}
-                isNew={product.IsNew}
-                isDiscounted={product.IsDiscounted}
-                previousPrice={product.Price}
-                discountedPrice={product.DiscountedPrice}
-              />
+              <Box sx={{cursor: "pointer"}} onClick={() => navigate(`/product/${product.ProductID}`)}>
+                <Component px={5}
+                  key={product.ProductID}
+                  productID={product.ProductID}
+                  nameOfProduct={product.Name}
+                  descOfProduct={product.Description}
+                  priceOfProduct={product.Price}
+                  imageOfProduct={imageUrl}
+                  categoryOfProduct={product.Category}
+                  genderOfProduct={product.Gender}
+                  isNew={product.IsNew}
+                  isDiscounted={product.IsDiscounted}
+                  previousPrice={product.Price}
+                  discountedPrice={product.DiscountedPrice}
+                />
+
+              </Box>
             </Box>
           );
         })}
