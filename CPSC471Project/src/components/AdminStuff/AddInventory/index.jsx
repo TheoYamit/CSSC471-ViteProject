@@ -169,18 +169,21 @@ const AddInventory = () => {
     const response = await fetch('http://localhost:3001/addinventory', {
       method: "POST",
       headers: {
-        "Content-type" : "application/json"
+        "Content-type": "application/json"
       },
       body: JSON.stringify(inventoryToSend)
     });
 
-    const responseFromServer = response.json();
-    
+    const responseFromServer = await response.json();
+    console.log(responseFromServer);
     const { status, message } = responseFromServer;
+
+    console.log(status);
+    console.log(message);
 
     setAlertInfo({
       isVisible: true,
-      status: status,
+      status: status === "success" ? "success" : "error",
       message: message
     })
 
@@ -233,6 +236,12 @@ const AddInventory = () => {
 
             {productDetails.categoryOfProduct == "Clothing" &&
               <Box as="form" onSubmit={handleOnSubmitClothing} w={{ base: "100%", lg: "50%" }} p={3}  >
+                {alertInfo.isVisible && (
+                  <Alert w="full" status={alertInfo.status}>
+                    <AlertIcon />
+                    {alertInfo.message}
+                  </Alert>
+                )}
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
@@ -265,6 +274,12 @@ const AddInventory = () => {
 
             {productDetails.categoryOfProduct == "Shoes" &&
               <Box as="form" onSubmit={handleOnSubmitShoes} w={{ base: "100%", lg: "50%" }} p={3}  >
+                {alertInfo.isVisible && (
+                  <Alert w="full" status={alertInfo.status}>
+                    <AlertIcon />
+                    {alertInfo.message}
+                  </Alert>
+                )}
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
@@ -297,6 +312,12 @@ const AddInventory = () => {
 
             {productDetails.categoryOfProduct == "Beauty Products" &&
               <Box as="form" onSubmit={handleOnSubmitBeauty} w={{ base: "100%", lg: "50%" }} p={3}>
+                {alertInfo.isVisible && (
+                  <Alert w="full" status={alertInfo.status}>
+                    <AlertIcon />
+                    {alertInfo.message}
+                  </Alert>
+                )}
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">

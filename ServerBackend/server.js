@@ -262,7 +262,7 @@ app.post('/addinventory', async (req, res) => {
             await query(queryInsertInventory, [productID, category, size, quantity]);
         });
 
-
+        console.log("Successfully updated inventory for product " + productID + "!");
         res.send({ status: "success", message: "Successfully updated inventory for product " + productID + "!" })
     } catch (error) {
         console.log(error);
