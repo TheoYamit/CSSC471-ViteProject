@@ -239,6 +239,27 @@ const AddInventory = () => {
                   </Table>
                 </VStack>
               </Box>}
+
+            {productDetails.categoryOfProduct == "Beauty Products" &&
+              <Box w={{ base: "100%", lg: "50%" }} p={3}>
+                <VStack align="stretch">
+                  <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
+                </VStack>
+                <FormControl py={4}>
+                  <FormLabel>Quantity:</FormLabel>
+                  <NumberInput defaultValue={15} min={0} step={1}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+                <Button w="full">Update Inventory of Product</Button>
+
+              </Box>
+
+            }
           </Flex>
         </>
         :
