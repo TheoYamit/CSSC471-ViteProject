@@ -65,7 +65,6 @@ const AddInventory = () => {
     setBeautySize(beautySize.map(s => s.size === size ? { ...s, quantity: parseInt(newQuantity) || 0 } : s));
   }
 
-
   const [productDetails, setProductDetails] = useState({
     productID: null,
     nameOfProduct: null,
@@ -112,7 +111,7 @@ const AddInventory = () => {
     if (status == "success") {
       setInventorylist(products);
 
-      const [{ ProductID, Name, Description, Price, Image, Category, Gender, IsNew, IsDiscounted }] = productInfo;
+      const [{ ProductID, Name, Description, Price, Image, Category, Gender, IsNew, IsDiscounted, DiscountedPrice }] = productInfo;
       const arrayBufferView = new Uint8Array(Image.data);
       const blob = new Blob([arrayBufferView], { type: "image/png" });
       const imageUrl = URL.createObjectURL(blob);
@@ -127,8 +126,25 @@ const AddInventory = () => {
         genderOfProduct: Gender,
         isNew: IsNew,
         isDiscounted: IsDiscounted,
-        previousPrice: Price
+        previousPrice: Price,
+        discountedPrice: DiscountedPrice
       });
+      if (products.length > 0) {
+        console.log(products);
+        const updatedSizes = products.map(product => ({
+          size: product.Size,
+          quantity: product.Stock,
+        }));
+
+        if (Category === "Clothing") {
+          setClothingSize(updatedSizes);
+        } else if (Category === "Shoes") {
+          setSizes(updatedSizes);
+        } else if (Category === "Beauty Products") {
+          setBeautySize(updatedSizes);
+        }
+      }
+
     }
 
     setTimeout(() => {
@@ -242,6 +258,7 @@ const AddInventory = () => {
                     {alertInfo.message}
                   </Alert>
                 )}
+
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
