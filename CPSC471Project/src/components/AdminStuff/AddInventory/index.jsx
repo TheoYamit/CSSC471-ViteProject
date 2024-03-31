@@ -42,16 +42,30 @@ const AddInventory = () => {
     { size: "L", quantity: 0 },
     { size: "XL", quantity: 0 },
     { size: "XXL", quantity: 0 },
-
   ];
 
-  const [clothingSize, setClothingSize] = useState(initialClothingSizes)
+  const initialBeautySizes = [
+    { size: "Regular", quantity: 0 }
+  ]
 
+  const [clothingSize, setClothingSize] = useState(initialClothingSizes)
   const [sizes, setSizes] = useState(initialShoeSizes);
+  const [beautySize, setBeautySize] = useState(initialBeautySizes);
+
+  const handleClothingSizeChange = (size, newQuantity) => {
+    setClothingSize(clothingSize.map(s => s.size === size ? { ...s, quantity: parseInt(newQuantity) || 0 } : s));
+  };
+
 
   const handleSizeChange = (size, newQuantity) => {
     setSizes(sizes.map(s => s.size === size ? { ...s, quantity: parseInt(newQuantity) || 0 } : s));
   };
+
+  const handleBeautyChange = (size, newQuantity) => {
+    setBeautySize(beautySize.map(s => s.size === size ? { ...s, quantity: parseInt(newQuantity) || 0 } : s));
+  }
+
+
 
 
   const [productDetails, setProductDetails] = useState({
@@ -146,6 +160,25 @@ const AddInventory = () => {
     setGotProduct(!gotProduct);
   }
 
+  const onSubmitInventory = async (data) => {
+
+  }
+
+
+
+  const handleOnSubmitClothing = async (event) => {
+    event.preventDefault();
+    await onSubmitInventory(clothingSize)
+  }
+  const handleOnSubmitShoes = async (event) => {
+    event.preventDefault();
+    await onSubmitInventory(sizes)
+  }
+  const handleOnSubmitBeauty = async (event) => {
+    event.preventDefault();
+    await onSubmitInventory()
+  }
+
 
 
   const directionInitial = useBreakpointValue({ base: "column" })
@@ -194,7 +227,7 @@ const AddInventory = () => {
                         <Tr key={size}>
                           <Td>{size}</Td>
                           <Td>
-                            <NumberInput value={quantity} min={0} onChange={(valueString) => handleSizeChange(size, valueString)}>
+                            <NumberInput value={quantity} min={0} onChange={(valueString) => handleClothingSizeChange(size, valueString)}>
                               <NumberInputField />
                               <NumberInputStepper>
                                 <NumberIncrementStepper />
@@ -206,6 +239,7 @@ const AddInventory = () => {
                       ))}
                     </Tbody>
                   </Table>
+                  <Button w="full">Update Inventory of Product</Button>
                 </VStack>
               </Box>}
 
@@ -237,6 +271,7 @@ const AddInventory = () => {
                       ))}
                     </Tbody>
                   </Table>
+                  <Button w="full">Update Inventory of Product</Button>
                 </VStack>
               </Box>}
 
@@ -244,17 +279,31 @@ const AddInventory = () => {
               <Box w={{ base: "100%", lg: "50%" }} p={3}>
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Size</Th>
+                        <Th>Quantity</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {beautySize.map(({ size, quantity }) => (
+                        <Tr key={size}>
+                          <Td>{size}</Td>
+                          <Td>
+                            <NumberInput value={quantity} min={0} onChange={(valueString) => handleBeautyChange(size, valueString)}>
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
                 </VStack>
-                <FormControl py={4}>
-                  <FormLabel>Quantity:</FormLabel>
-                  <NumberInput defaultValue={15} min={0} step={1}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </FormControl>
                 <Button w="full">Update Inventory of Product</Button>
 
               </Box>
