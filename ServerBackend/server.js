@@ -230,12 +230,15 @@ app.get('/getproductbeauty', async(req, res) => {
 app.post('/getproductinventory', async (req, res) => {
     const { productID } = req.body
     const getInventoryQuery = `SELECT Size, Stock FROM inventory WHERE ProductID = ?`
+    const getProductQuery = `SELECT * FROM products WHERE ProductID = ?`;
     data = [productID];
     
     try {
         const results = await query(getInventoryQuery, data);
+        const results2 = await query(getProductQuery, data)
         console.log(results);
-        res.send({status: "success", message: "Obtained product info. Loading info...", products: results})
+        console.log(results2);
+        res.send({status: "success", message: "Obtained product info. Loading info...", products: results, productInfo: results2})
     } catch(error) {
         res.status(500).send({ status: "error", message: "Could not find Product ID!" });
     }

@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { Flex, Box, Text, HStack, Alert, AlertIcon, useBreakpointValue, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
+import {
+  Flex, Box, Text, VStack, Alert, AlertIcon, useBreakpointValue, FormControl, FormLabel,
+  Input, Button, NumberInput, NumberInputStepper, NumberInputField, NumberIncrementStepper, NumberDecrementStepper,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+} from '@chakra-ui/react';
+import ProductBox from '../../ProductBox';
+import ProductBoxNew from '../../ProductBoxNew'
+import ProductBoxDiscounted from '../../ProductBoxDiscounted';
+import ProductBoxNewDiscounted from '../../ProductBoxNewDiscounted';
 
 const AddInventory = () => {
 
@@ -8,6 +21,54 @@ const AddInventory = () => {
   const [productID, setProductID] = useState({
     productID: ""
   });
+
+  const initialShoeSizes = [
+    { size: '8', quantity: 0 },
+    { size: '8.5', quantity: 0 },
+    { size: '9', quantity: 0 },
+    { size: '9.5', quantity: 0 },
+    { size: '10', quantity: 0 },
+    { size: '10.5', quantity: 0 },
+    { size: '11', quantity: 0 },
+    { size: '11.5', quantity: 0 },
+    { size: '12', quantity: 0 },
+    { size: '12.5', quantity: 0 },
+    { size: '13', quantity: 0 },
+  ];
+
+  const initialClothingSizes = [
+    { size: "S", quantity: 0 },
+    { size: "M", quantity: 0 },
+    { size: "L", quantity: 0 },
+    { size: "XL", quantity: 0 },
+    { size: "XXL", quantity: 0 },
+
+  ];
+
+  const [clothingSize, setClothingSize] = useState(initialClothingSizes)
+
+  const [sizes, setSizes] = useState(initialShoeSizes);
+
+  const handleSizeChange = (size, newQuantity) => {
+    setSizes(sizes.map(s => s.size === size ? { ...s, quantity: parseInt(newQuantity) || 0 } : s));
+  };
+
+
+  const [productDetails, setProductDetails] = useState({
+    productID: null,
+    nameOfProduct: null,
+    descOfProduct: null,
+    priceOfProduct: null,
+    imageOfProduct: null,
+    imageOfProductURL: null,
+    categoryOfProduct: null,
+    genderOfProduct: null,
+    isNew: null,
+    isDiscounted: null,
+    previousPrice: null,
+    discountedPrice: null
+  });
+
 
   const handleChangeGetProduct = (e) => {
     const { name, value } = e.target;
@@ -28,7 +89,7 @@ const AddInventory = () => {
 
     const responseFromServer = await response.json();
 
-    const { status, message, products } = responseFromServer;
+    const { status, message, products, productInfo } = responseFromServer;
 
     setAlertInfo({
       isVisible: true,
@@ -36,16 +97,43 @@ const AddInventory = () => {
       message: message
     });
 
-    if ( status == "success") {
-      setInventorylist(products)
+    if (status == "success") {
+      setInventorylist(products);
+
+      const [{ ProductID, Name, Description, Price, Image, Category, Gender, IsNew, IsDiscounted }] = productInfo;
+      const arrayBufferView = new Uint8Array(Image.data);
+      const blob = new Blob([arrayBufferView], { type: "image/png" });
+      const imageUrl = URL.createObjectURL(blob);
+      setProductDetails({
+        productID: ProductID,
+        nameOfProduct: Name,
+        descOfProduct: Description,
+        priceOfProduct: Price,
+        imageOfProduct: Image,
+        imageOfProductURL: imageUrl,
+        categoryOfProduct: Category,
+        genderOfProduct: Gender,
+        isNew: IsNew,
+        isDiscounted: IsDiscounted,
+        previousPrice: Price
+      });
     }
+
+    setTimeout(() => {
+      toggleGotProduct()
+      setAlertInfo({
+        isVisible: false,
+        status: "",
+        message: ""
+      })
+    }, 3000);
 
 
   }
 
   const handleGetProduct = async (event) => {
     event.preventDefault();
-    await onSubmitGetProduct(productID);
+    await onSubmitGetProductInventory(productID);
   }
 
   const [alertInfo, setAlertInfo] = useState({
@@ -55,18 +143,103 @@ const AddInventory = () => {
   });
 
   const toggleGotProduct = () => {
-    toggleGotProduct(!gotProduct);
+    setGotProduct(!gotProduct);
   }
 
 
 
   const directionInitial = useBreakpointValue({ base: "column" })
+  const direction = useBreakpointValue({ base: "column", lg: "row" })
+  const Component = productDetails.isNew == 1
+    ? productDetails.isDiscounted == 1 ? ProductBoxNewDiscounted : ProductBoxNew
+    : productDetails.isDiscounted == 1 ? ProductBoxDiscounted : ProductBox;
+
 
   return (
     <>
       {gotProduct ?
         <>
+          <Flex direction={direction} justifyContent="space-between" alignItems="start" p={5}>
+            <Box w={{ base: "100%", lg: "50%" }} p={3}>
+              <Component
+                key={productDetails.productID}
+                productID={productDetails.productID}
+                nameOfProduct={productDetails.nameOfProduct}
+                descOfProduct={productDetails.descOfProduct}
+                priceOfProduct={productDetails.priceOfProduct}
+                imageOfProduct={productDetails.imageOfProductURL}
+                categoryOfProduct={productDetails.categoryOfProduct}
+                genderOfProduct={productDetails.genderOfProduct}
+                isNew={productDetails.isNew}
+                isDiscounted={productDetails.isDiscounted}
+                previousPrice={productDetails.priceOfProduct}
+                discountedPrice={productDetails.discountedPrice}
+              >
+              </Component>
+            </Box>
 
+            {productDetails.categoryOfProduct == "Clothing" &&
+              <Box w={{ base: "100%", lg: "50%" }} p={3}  >
+                <VStack align="stretch">
+                  <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Size</Th>
+                        <Th>Quantity</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {clothingSize.map(({ size, quantity }) => (
+                        <Tr key={size}>
+                          <Td>{size}</Td>
+                          <Td>
+                            <NumberInput value={quantity} min={0} onChange={(valueString) => handleSizeChange(size, valueString)}>
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </VStack>
+              </Box>}
+
+            {productDetails.categoryOfProduct == "Shoes" &&
+              <Box w={{ base: "100%", lg: "50%" }} p={3}  >
+                <VStack align="stretch">
+                  <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Size</Th>
+                        <Th>Quantity</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {sizes.map(({ size, quantity }) => (
+                        <Tr key={size}>
+                          <Td>{size}</Td>
+                          <Td>
+                            <NumberInput value={quantity} min={0} onChange={(valueString) => handleSizeChange(size, valueString)}>
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </VStack>
+              </Box>}
+          </Flex>
         </>
         :
         <>
