@@ -86,8 +86,11 @@ const ProductInfo = () => {
             previousPrice={productDetails.priceOfProduct}
             discountedPrice={productDetails.discountedPrice}
           >
-
           </Component>
+        </Box>
+
+        <Box w={{base: "100%", lg: "50%"}}>
+
         </Box>
       </Flex>
     </>

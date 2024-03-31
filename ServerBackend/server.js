@@ -238,6 +238,10 @@ app.post('/getproductinventory', async (req, res) => {
         const results2 = await query(getProductQuery, data)
         console.log(results);
         console.log(results2);
+
+        if (results2.length == 0) {
+            throw Error;
+        }
         res.send({ status: "success", message: "Obtained product info. Loading info...", products: results, productInfo: results2 })
     } catch (error) {
         res.status(500).send({ status: "error", message: "Could not find Product ID!" });
@@ -247,13 +251,7 @@ app.post('/getproductinventory', async (req, res) => {
 app.post('/addinventory', async (req, res) => {
     const { productID, category, inventoryData } = req.body;
 
-    const lengthOfInventory = inventoryData.length;
-
-    const queryCheckInventory = `SELECT * FROM inventory WHERE ProductID = ?`
-
     try {
-        const product = await query(queryCheckInventory, [productID]);
-        
         const queryInsertInventory = `
                 INSERT INTO inventory(ProductID, Category, Size, Stock) 
                 VALUES (?, ?, ?, ?) 
