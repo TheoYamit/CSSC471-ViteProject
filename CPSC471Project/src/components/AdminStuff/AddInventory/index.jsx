@@ -66,8 +66,6 @@ const AddInventory = () => {
   }
 
 
-
-
   const [productDetails, setProductDetails] = useState({
     productID: null,
     nameOfProduct: null,
@@ -158,26 +156,48 @@ const AddInventory = () => {
 
   const toggleGotProduct = () => {
     setGotProduct(!gotProduct);
-  }
+  };
 
   const onSubmitInventory = async (data) => {
+    console.log(data);
+    const inventoryToSend = {
+      productID: productDetails.productID,
+      category: productDetails.categoryOfProduct,
+      inventoryData: data
+    }
 
-  }
+    const response = await fetch('http://localhost:3001/addinventory', {
+      method: "POST",
+      headers: {
+        "Content-type" : "application/json"
+      },
+      body: JSON.stringify(inventoryToSend)
+    });
 
+    const responseFromServer = response.json();
+    
+    const { status, message } = responseFromServer;
 
+    setAlertInfo({
+      isVisible: true,
+      status: status,
+      message: message
+    })
+
+  };
 
   const handleOnSubmitClothing = async (event) => {
     event.preventDefault();
     await onSubmitInventory(clothingSize)
-  }
+  };
   const handleOnSubmitShoes = async (event) => {
     event.preventDefault();
     await onSubmitInventory(sizes)
-  }
+  };
   const handleOnSubmitBeauty = async (event) => {
     event.preventDefault();
-    await onSubmitInventory()
-  }
+    await onSubmitInventory(beautySize)
+  };
 
 
 
@@ -212,7 +232,7 @@ const AddInventory = () => {
             </Box>
 
             {productDetails.categoryOfProduct == "Clothing" &&
-              <Box w={{ base: "100%", lg: "50%" }} p={3}  >
+              <Box as="form" onSubmit={handleOnSubmitClothing} w={{ base: "100%", lg: "50%" }} p={3}  >
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
@@ -239,12 +259,12 @@ const AddInventory = () => {
                       ))}
                     </Tbody>
                   </Table>
-                  <Button w="full">Update Inventory of Product</Button>
+                  <Button type="submit" w="full">Update Inventory of Product</Button>
                 </VStack>
               </Box>}
 
             {productDetails.categoryOfProduct == "Shoes" &&
-              <Box w={{ base: "100%", lg: "50%" }} p={3}  >
+              <Box as="form" onSubmit={handleOnSubmitShoes} w={{ base: "100%", lg: "50%" }} p={3}  >
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
@@ -271,12 +291,12 @@ const AddInventory = () => {
                       ))}
                     </Tbody>
                   </Table>
-                  <Button w="full">Update Inventory of Product</Button>
+                  <Button type="submit" w="full">Update Inventory of Product</Button>
                 </VStack>
               </Box>}
 
             {productDetails.categoryOfProduct == "Beauty Products" &&
-              <Box w={{ base: "100%", lg: "50%" }} p={3}>
+              <Box as="form" onSubmit={handleOnSubmitBeauty} w={{ base: "100%", lg: "50%" }} p={3}>
                 <VStack align="stretch">
                   <Text fontFamily="Adineue PRO Bold" fontSize="6xl">Inventory for #{productDetails.productID}</Text>
                   <Table variant="simple">
@@ -304,7 +324,7 @@ const AddInventory = () => {
                     </Tbody>
                   </Table>
                 </VStack>
-                <Button w="full">Update Inventory of Product</Button>
+                <Button type="submit" w="full">Update Inventory of Product</Button>
 
               </Box>
 
