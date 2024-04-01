@@ -8,6 +8,8 @@ import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew';
 import ProductBoxDiscounted from '../ProductBoxDiscounted';
 import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSort, faPlus, faMinus, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 const ProductInfo = () => {
   const [productDetails, setProductDetails] = useState({
@@ -25,6 +27,21 @@ const ProductInfo = () => {
   })
 
   const [inventoryList, setInventorylist] = useState();
+  const [sizePressed, setSizePressed] = useState({
+    size: null,
+    stock: null
+  });
+  const [numberOfItem, setNumberOfItem] = useState(1);
+
+  const handleSizePress = (size, stock) => {
+    setSizePressed({
+      size: size,
+      stock: stock
+    })
+  }
+
+
+
 
   let { ProductID } = useParams();
 
@@ -49,18 +66,31 @@ const ProductInfo = () => {
           quantity: product.Stock,
         }));
 
-        const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
-
-        const sortedInventory = updatedSizes.sort((a, b) => {
-          return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
-        });
-        setInventorylist(sortedInventory);
-
-
         const [{ ProductID, Name, Description, Price, Image, Category, Gender, IsNew, IsDiscounted, DiscountedPrice }] = productInfo;
         const arrayBufferView = new Uint8Array(Image.data);
         const blob = new Blob([arrayBufferView], { type: "image/png" });
         const imageUrl = URL.createObjectURL(blob);
+
+
+        const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
+        const sizeOrder2 = ["8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12", "12.5", "13"]
+
+        if (Category == "Clothing") {
+          const sortedInventory = updatedSizes.sort((a, b) => {
+            return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+          });
+
+          setInventorylist(sortedInventory)
+        } else if (Category == "Shoes") {
+          const sortedInventory = updatedSizes.sort((a, b) => {
+            return sizeOrder2.indexOf(a.size) - sizeOrder2.indexOf(b.size);
+          });
+          setInventorylist(sortedInventory)
+        }
+        else {
+          setInventorylist(updatedSizes)
+        }
+
         setProductDetails({
           productID: ProductID,
           nameOfProduct: Name,
@@ -85,8 +115,8 @@ const ProductInfo = () => {
   }, [ProductID]);
 
   useEffect(() => {
-    console.log(inventoryList);
-  }, [inventoryList]);
+    console.log(sizePressed);
+  }, [sizePressed]);
 
   const direction = useBreakpointValue({ base: "column", lg: "row" });
 
@@ -124,17 +154,46 @@ const ProductInfo = () => {
                 <Button
                   key={index}
                   size="md"
-                  width="30%"
+                  width="25%"
                   height="100px"
-                  onClick={() => console.log(`Selected size: ${item.Size}, Stock: ${item.Stock}`)}
+                  onClick={() => handleSizePress(item.size, item.quantity)}
+                  isDisabled={!item.quantity}
+                  bg={sizePressed.size === item.size ? "#776B5D" : "#F3EEEA"}
                 >
                   <VStack>
-                    <Text>{`Size: ${item.size}`}</Text>
-                    <Text>{`Stock: ${item.quantity}`}</Text>
+                    <Text color={sizePressed.size === item.size ? "white" : "black"}>{`Size: ${item.size}`}</Text>
+                    {item.quantity != 0 ?
+                      <Text color={sizePressed.size === item.size ? "white" : "black"}>{`Stock: ${item.quantity}`}</Text>
+                      :
+                      <Text color="red">SOLD OUT</Text>
+                    }
                   </VStack>
                 </Button>
               ))}
             </HStack>
+            <HStack justifyContent="center" py={10} spacing={4}>
+              <Button
+                isDisabled={sizePressed.size == null || numberOfItem == 1}
+                borderRadius="50%" bg="#B0A695"
+                onClick={() => setNumberOfItem(numberOfItem - 1)}>
+                <FontAwesomeIcon icon={faMinus} />
+              </Button>
+              <Text fontSize="2xl">{numberOfItem}</Text>
+              <Button
+                isDisabled={sizePressed.size == null || sizePressed.stock == numberOfItem}
+                borderRadius="50%" bg="#B0A695"
+                onClick={() => setNumberOfItem(numberOfItem + 1)}>
+                <FontAwesomeIcon icon={faPlus} />
+              </Button>
+            </HStack>
+            <Flex justifyContent="center">
+              <Button bg="#EBE3D5" borderRadius="20px" px={10} py={8}>
+                <HStack alignItems="center">
+                  <FontAwesomeIcon icon={faCartShopping} />
+                  <Text>Add to Order</Text>
+                </HStack>
+              </Button>
+            </Flex>
           </VStack>
         </Box>
       </Flex>
