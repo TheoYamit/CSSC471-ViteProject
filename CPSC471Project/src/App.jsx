@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import ProductPage from './pages/ProductPage'
 import AdminProductsPage from './pages/AdminPages/AdminProductsPage'
+import OrderPage from './pages/Orders/'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '../src/contexts/Authorization/Authorized'
 import { OrderProvider } from './contexts/Order/Order'
@@ -22,6 +23,7 @@ function App() {
                         <Route path='/login' element={<Login />} />
                         <Route path='/register' element={<Register />} />
                         <Route path='/profile' element={<Profile />} />
+                        <Route path='/orders' element={<OrderPage />}/>
                         <Route path='/adminproducts' element={<AdminProductsPage />} />
                     </Routes>
                 </OrderProvider>
