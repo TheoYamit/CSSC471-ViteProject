@@ -107,6 +107,11 @@ const NavBar = () => {
     navigate(path)
   }
 
+  const handleLogout = () => {
+    logout();
+    clearOrder();
+  }
+
   return (
     <>
       <Flex bg="#F3EEEA" py={4} px={2} alignItems="center"
@@ -170,7 +175,7 @@ const NavBar = () => {
                 <MenuList bg="#B0A695">
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
-                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={logout}>Logout</MenuItem>
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </>
