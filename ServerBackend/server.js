@@ -133,9 +133,9 @@ app.post('/getproductscategory', async (req, res) => {
 
     try {
         const results = await query(queryForCategory, categoryOfProduct);
-        res.send({status: "success", message: "Successfuly got products for the given category.", products: results});
-    } catch(error) {
-        res.status(500).send({status: "error", message: "Error occured."});
+        res.send({ status: "success", message: "Successfuly got products for the given category.", products: results });
+    } catch (error) {
+        res.status(500).send({ status: "error", message: "Error occured." });
     }
 
 });
@@ -157,7 +157,7 @@ app.post('/editproduct', upload.single('imageOfProduct'), async (req, res) => {
             console.log(error);
         }
     }
-    console.log("imageOfProduct data: ", imageOfProduct )
+    console.log("imageOfProduct data: ", imageOfProduct)
 
     console.log("Original discountedPrice:", discountedPrice);
 
@@ -182,47 +182,47 @@ app.post('/editproduct', upload.single('imageOfProduct'), async (req, res) => {
 
 })
 
-app.get('/getproductclothing', async(req, res) => {
+app.get('/getproductclothing', async (req, res) => {
 
     const clothingProdQuery = 'SELECT * FROM products WHERE Category = ?'
     const data = ["Clothing"];
 
     try {
         const results = await query(clothingProdQuery, data);
-        res.send({status: "success", message: "Products sent!", products: results});
-    } catch(error) {
+        res.send({ status: "success", message: "Products sent!", products: results });
+    } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "Error occurred"});
+        res.status(500).send({ status: "error", message: "Error occurred" });
     }
 
 });
 
-app.get('/getproductshoes', async(req, res) => {
+app.get('/getproductshoes', async (req, res) => {
 
     const shoesProdQuery = 'SELECT * FROM products WHERE Category = ?'
     const data = ["Shoes"];
 
     try {
         const results = await query(shoesProdQuery, data);
-        res.send({status: "success", message: "Products sent!", products: results});
-    } catch(error) {
+        res.send({ status: "success", message: "Products sent!", products: results });
+    } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "Error occurred"});
+        res.status(500).send({ status: "error", message: "Error occurred" });
     }
 
 });
 
-app.get('/getproductbeauty', async(req, res) => {
+app.get('/getproductbeauty', async (req, res) => {
 
     const beautyProdQuery = 'SELECT * FROM products WHERE Category = ?'
     const data = ["Beauty Products"];
 
     try {
         const results = await query(beautyProdQuery, data);
-        res.send({status: "success", message: "Products sent!", products: results});
-    } catch(error) {
+        res.send({ status: "success", message: "Products sent!", products: results });
+    } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "Error occurred"});
+        res.status(500).send({ status: "error", message: "Error occurred" });
     }
 
 });
@@ -232,15 +232,39 @@ app.post('/getproductinventory', async (req, res) => {
     const getInventoryQuery = `SELECT Size, Stock FROM inventory WHERE ProductID = ?`
     const getProductQuery = `SELECT * FROM products WHERE ProductID = ?`;
     data = [productID];
-    
+
     try {
         const results = await query(getInventoryQuery, data);
         const results2 = await query(getProductQuery, data)
         console.log(results);
         console.log(results2);
-        res.send({status: "success", message: "Obtained product info. Loading info...", products: results, productInfo: results2})
-    } catch(error) {
+
+        if (results2.length == 0) {
+            throw Error;
+        }
+        res.send({ status: "success", message: "Obtained product info. Loading info...", products: results, productInfo: results2 })
+    } catch (error) {
         res.status(500).send({ status: "error", message: "Could not find Product ID!" });
+    }
+});
+
+app.post('/addinventory', async (req, res) => {
+    const { productID, category, inventoryData } = req.body;
+
+    try {
+        const queryInsertInventory = `
+                INSERT INTO inventory(ProductID, Category, Size, Stock) 
+                VALUES (?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE Stock = VALUES(Stock)`
+        inventoryData.forEach(async ({ size, quantity }) => {
+            await query(queryInsertInventory, [productID, category, size, quantity]);
+        });
+
+        console.log("Successfully updated inventory for product " + productID + "!");
+        res.send({ status: "success", message: "Successfully updated inventory for product " + productID + "!" })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ status: "error", message: "Could not update inventory!" });
     }
 });
 
