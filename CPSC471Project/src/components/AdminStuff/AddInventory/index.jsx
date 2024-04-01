@@ -136,12 +136,19 @@ const AddInventory = () => {
           quantity: product.Stock,
         }));
 
+        const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
+        
+        const sortedInventory = updatedSizes.sort((a, b) => {
+          return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
+        });
+
+
         if (Category === "Clothing") {
-          setClothingSize(updatedSizes);
+          setClothingSize(sortedInventory);
         } else if (Category === "Shoes") {
-          setSizes(updatedSizes);
+          setSizes(sortedInventory);
         } else if (Category === "Beauty Products") {
-          setBeautySize(updatedSizes);
+          setBeautySize(sortedInventory);
         }
       }
 
