@@ -1,0 +1,13 @@
+.profile {
+    background-color: #EBE3D5;
+    height: 695px;
+    padding: 20px;
+}
+
+.profile-buttons {
+    background-color: #B0A695;
+}
+
+.profile-buttons:hover {
+    background-color: #a89d8a;
+}

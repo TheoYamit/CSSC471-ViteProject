@@ -1,14 +1,49 @@
+.navbar {
+  position: fixed;
+  width: 100%; 
+  transition: top 0.3s;
+  top: 0;
+  height: 80px;
+}
+
+.navbar-hidden {
+  top: -80px;
+}
+.navbar-spacer {
+    height: 82px;
+}
+
 .search-bar {
     outline: none;
     color: black;
+    width: 60%;
+    height: 40px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    text-indent: 2%;
 }
 .search-button {
     background-color: rgb(208, 208, 208);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 .search-button:hover {
     border-color: grey;
     background-color: rgb(193, 193, 193);
 }
+
+@media (max-width: 647px) {
+  .search-bar, .search-button {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  #search-bar, #search-button {
+    display: none;
+  }
+}
+
 
 .background-of-navbar {
     background-color: #F3EEEA;
@@ -40,4 +75,24 @@
 .register-button:focus {
     background-color: #6c7782;;
     outline: none;
+}
+
+.profile-button {
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 50%;
+    background-color: #B0A695;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border-radius: 50%;
 }
