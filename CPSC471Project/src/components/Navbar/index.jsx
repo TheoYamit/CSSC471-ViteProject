@@ -42,10 +42,19 @@ const NavBar = () => {
     setOpen(!open);
   }
 
-  const [itemCount, setItemCount] = useState();
+  const [itemCount, setItemCount] = useState(0);
 
+  useEffect(() => {
+    let newItemCount = 0;
+    orders.forEach(({ Quantity }) => {
+      newItemCount += Quantity;
+    })
+    setItemCount(newItemCount);
+  }, [orders])
 
-
+  useEffect(() => {
+    console.log(itemCount)
+  }, [itemCount]);
 
 
   const NavBarSpacer = () => {
@@ -147,7 +156,12 @@ const NavBar = () => {
         {isAuthenticated ?
           (
             <>
-              <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
+              <Flex>
+                <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
+                <div style={{display: itemCount == 0 ? "none" : null}} className="circle"> 
+                  <Text>{itemCount}</Text>
+                </div>
+              </Flex>
               <Menu>
                 <Text className="px-2" color="#776B5D">{userDetails.Username}{isAdmin ? " (ADMIN)" : ""}</Text>
                 <MenuButton as={Button} bg="#B0A695" style={{ borderRadius: "40px" }} _hover={{ bg: '#776B5D' }} _expanded={{ bg: "#776B5D" }}>
