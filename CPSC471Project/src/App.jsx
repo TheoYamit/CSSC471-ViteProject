@@ -8,7 +8,7 @@ import ProductPage from './pages/ProductPage'
 import AdminProductsPage from './pages/AdminPages/AdminProductsPage'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '../src/contexts/Authorization/Authorized'
-import { OrderProvider } from '../src/contexts/Authorization/Order/Order'
+import { OrderProvider } from './contexts/Order/Order'
 function App() {
     const [count, setCount] = useState(0)
 
