@@ -3,16 +3,13 @@ import './navbar.css';
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSearch, faSignIn, faUserPlus, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch,  faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/Authorization/Authorized';
 import {
-  Flex, Box, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button,
+  Flex, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button,
 } from '@chakra-ui/react'
 import { Drawer } from '@mui/material';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useOrder } from '../../contexts/Order/Order';
@@ -107,6 +104,11 @@ const NavBar = () => {
     navigate(path)
   }
 
+  const routeChangeOrders = () => {
+      let path = '/orders'
+      navigate(path)
+    }
+
   const handleLogout = () => {
     logout();
     clearOrder();
@@ -161,8 +163,8 @@ const NavBar = () => {
         {isAuthenticated ?
           (
             <>
-              <Flex>
-                <FontAwesomeIcon icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null }} size="xl" />
+              <Flex justifyContent="center">
+                <FontAwesomeIcon onClick={routeChangeOrders} icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null, cursor: "pointer" }} size="xl" />
                 <div style={{display: itemCount == 0 ? "none" : null}} className="circle"> 
                   <Text>{itemCount}</Text>
                 </div>
@@ -174,7 +176,7 @@ const NavBar = () => {
                 </MenuButton>
                 <MenuList bg="#B0A695">
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
-                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }}>Orders</MenuItem>
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeOrders}>Orders</MenuItem>
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
