@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faSearch, faSignIn, faUserPlus, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/Authorization/Authorized';
 import {
-  Flex, Box, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button, useDisclosure,
+  Flex, Box, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button,
 } from '@chakra-ui/react'
 import { Drawer } from '@mui/material';
 
@@ -15,6 +15,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import { useOrder } from '../../contexts/Order/Order';
 
 
 const categories = [
@@ -28,6 +29,8 @@ const categories = [
 
 const NavBar = () => {
   const { isAuthenticated, isAdmin, userDetails, logout } = useAuth();
+  const { orders, clearOrder } = useOrder();
+
   const [showNav, setShowNav] = useState(true);
 
   const [lastScrollY, setLastScrollY] = useState(window.pageYOffset);
@@ -38,6 +41,12 @@ const NavBar = () => {
   const toggleDrawer = () => {
     setOpen(!open);
   }
+
+  const [itemCount, setItemCount] = useState();
+
+
+
+
 
   const NavBarSpacer = () => {
     return (

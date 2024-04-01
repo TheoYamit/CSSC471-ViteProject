@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './productinfo.css';
 import {
-  Flex, Box, VStack, HStack, Spacer, Image, Text, Input, Button, useBreakpointValue
-} from '@chakra-ui/react';
+  Flex, Box, VStack, HStack, Spacer, Image, Text, Input, Button, useBreakpointValue,
+  Alert, AlertIcon } from '@chakra-ui/react';
 import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew';
 import ProductBoxDiscounted from '../ProductBoxDiscounted';
 import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faPlus, faMinus, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { useOrder } from '../../contexts/Order/Order';
 
 const ProductInfo = () => {
   const [productDetails, setProductDetails] = useState({
@@ -31,7 +32,16 @@ const ProductInfo = () => {
     size: null,
     stock: null
   });
+
+  const [alertInfo, setAlertInfo] = useState({
+    isVisible: false,
+    status: "",
+    message: ""
+  })
+
   const [numberOfItem, setNumberOfItem] = useState(1);
+  const { addToOrder } = useOrder();
+
 
   const handleSizePress = (size, stock) => {
     setSizePressed({
@@ -39,6 +49,40 @@ const ProductInfo = () => {
       stock: stock
     })
   }
+
+  const handleAddToOrder = () => {
+    const listOfNumbers = "123456789"
+    const listOfLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    let newOrderID = "";
+    while (newOrderID.length < 10) {
+      let firstRand = Math.floor(Math.random() * 2); 
+    
+      if (firstRand === 0) {
+        let secondRand = Math.floor(Math.random() * listOfNumbers.length);
+        newOrderID += listOfNumbers[secondRand];
+      } else {
+        let secondRand = Math.floor(Math.random() * listOfLetters.length);
+        newOrderID += listOfLetters[secondRand];
+      }
+    }
+
+    const product = {
+      OrderID: newOrderID,
+      ProductID: productDetails.productID,
+      TotalPrice: productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2),
+      Size: sizePressed.size,
+      Quantity: numberOfItem, 
+      ProductInfo: productDetails
+    }
+    addToOrder(product)
+    setAlertInfo({
+      isVisible: true,
+      status: "success",
+      message: "Product added to order!"
+    })
+  };
+
+
 
 
 
@@ -144,8 +188,14 @@ const ProductInfo = () => {
           >
           </Component>
         </Box>
-
         <Box w={{ base: "100%", lg: "50%" }} px={3}>
+          {alertInfo.isVisible && 
+          <Alert status={alertInfo.status}>
+            <AlertIcon/>
+            {alertInfo.message}
+          </Alert>
+          }
+
           <VStack align="stretch" spacing={4}>
             <Text fontSize="6xl" fontFamily="adineue PRO Bold">{productDetails.nameOfProduct}</Text>
             <Text fontSize="3xl">Select size:</Text>
@@ -186,13 +236,17 @@ const ProductInfo = () => {
                 <FontAwesomeIcon icon={faPlus} />
               </Button>
             </HStack>
+
             <Flex justifyContent="center">
-              <Button bg="#EBE3D5" borderRadius="20px" px={10} py={8}>
-                <HStack alignItems="center">
-                  <FontAwesomeIcon icon={faCartShopping} />
-                  <Text>Add to Order</Text>
-                </HStack>
-              </Button>
+              <VStack>
+                <Text>${productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2)}</Text>
+                <Button onClick={handleAddToOrder} isDisabled={sizePressed.size == null} bg="#EBE3D5" borderRadius="20px" px={10} py={8}>
+                  <HStack alignItems="center">
+                    <FontAwesomeIcon icon={faCartShopping} />
+                    <Text>Add to Order</Text>
+                  </HStack>
+                </Button>
+              </VStack>
             </Flex>
           </VStack>
         </Box>

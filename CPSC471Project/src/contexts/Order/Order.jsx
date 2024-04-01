@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const OrderContext = createContext();
 
@@ -10,7 +10,12 @@ export const OrderProvider = ({ children }) => {
 
     const addToOrder = (product) => {
         setOrders(prevOrders => [...prevOrders, product]);
+        
     }
+
+    useEffect(() => {
+        console.log(orders);
+    })
 
     const removeFromOrder = (productID) => {
         setOrders(prevOrders => prevOrders.filter(product => product.productID !== productID))
