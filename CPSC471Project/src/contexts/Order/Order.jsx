@@ -17,8 +17,8 @@ export const OrderProvider = ({ children }) => {
         console.log(orders);
     })
 
-    const removeFromOrder = (productID) => {
-        setOrders(prevOrders => prevOrders.filter(product => product.productID !== productID))
+    const removeFromOrder = (productID, size) => {
+        setOrders(prevOrders => prevOrders.filter(product => product.ProductID !== productID || product.Size != size));
     };
 
     const clearOrder = () => {
