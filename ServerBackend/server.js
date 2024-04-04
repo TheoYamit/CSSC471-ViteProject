@@ -3,16 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer')
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } })
-const bodyParser = require('body-parser')
 const mysql = require('mysql2');
 
-const app = express({ limit: "1000mb" });
-app.use(express.json());
+const app = express({ limit: "50mb" });
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded({extended: "true", limit: '50mb'}));
 app.use(cors({
     origin: '*'
 }));
-
-app.use(bodyParser.json());
 
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -268,6 +266,35 @@ app.post('/addinventory', async (req, res) => {
     }
 });
 
+app.post('/addorder', async (req, res) => {
+    console.log(req.body);
+    const { OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentDetails, Status, ExpectedDays, Products} = req.body;
+    
+    const addOrderQuery = `INSERT INTO orders (OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentID, Status, ExpectedDays)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+    const addPaymentQuery = `INSERT INTO payment (PaymentID, CustomerID, Total, CardNumber, CardDate, SecurityCode) VALUES (?, ?, ?, ?, ?, ?)`
+    const addOrderDetailQuery = `INSERT INTO order_details (OrderID, ProductID, Size, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?)`
+    
+    const { PaymentNum, CardNumber, CardDate, CardCVC, TotalAmount } = PaymentDetails;
+
+    const addOrderData = [OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentNum, Status, ExpectedDays]
+    const addPaymentData = [PaymentNum, CustomerID, TotalAmount, CardNumber, CardDate, CardCVC]
+
+    try {
+        await query(addOrderQuery, addOrderData);
+        await query(addPaymentQuery, addPaymentData);
+
+        Products.forEach( async ({OrderID, ProductID, TotalPrice, Size, Quantity}) => {
+            await query(addOrderDetailQuery, [OrderID, ProductID, Size, Quantity, TotalPrice]);
+        });
+        res.send({status: "success", message: "Successfully placed order! Order Number: " + OrderID + ", Payment Number: " + PaymentNum})
+    } catch(error) {
+        console.log(error);
+        res.status(500).send({status: "error", message: "An error occured. "})
+    }
+
+});
 
 
 

@@ -49,8 +49,6 @@ const LoginComponent = () => {
       setTimeout(() => {
         navigateHome('/');
       }, 2000);
-      
-
     }
 
   };
