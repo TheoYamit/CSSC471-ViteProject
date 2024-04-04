@@ -4,7 +4,6 @@ import OrderDisplay from '../../components/OrdersCurrent';
 
 const OrderPage = () => {
 
-
   return (
     <>
       <NavBar/>
