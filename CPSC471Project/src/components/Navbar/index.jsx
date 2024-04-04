@@ -105,7 +105,7 @@ const NavBar = () => {
   }
 
   const routeChangeOrders = () => {
-      let path = '/orders'
+      let path = '/customerorders'
       navigate(path)
     }
 
