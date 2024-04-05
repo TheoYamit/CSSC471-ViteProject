@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Flex, Text, Box, VStack, Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, } from '@chakra-ui/react';
 import { useAuth } from '../../contexts/Authorization/Authorized';
 
@@ -6,6 +7,7 @@ const CustomerOrders = () => {
 
   const { userDetails } = useAuth();
   const [customerOrders, setCustomerOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getOrders = async () => {
@@ -78,7 +80,7 @@ const CustomerOrders = () => {
                 {customerOrders.map(({ OrderID, Name, Address, Country, Postal, DateOfOrder, PaymentID, Status, Processed, ExpectedDays }) => {
                   return (
                     <Tr>
-                      <Td>{OrderID}</Td>
+                      <Td sx={{cursor: "pointer"}} _hover={{bg: "#D3D3D3"}} onClick={() => navigate(`/customerorderdetails/${OrderID}`)}>{OrderID}</Td>
                       <Td>{Name}</Td>
                       <Td>{Address}</Td>
                       <Td>{Country}</Td>
