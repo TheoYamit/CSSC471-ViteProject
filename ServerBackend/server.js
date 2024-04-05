@@ -296,6 +296,23 @@ app.post('/addorder', async (req, res) => {
 
 });
 
+app.post('/getcustomerorders', async (req, res) => {
+    const { Username } = req.body;
+    console.log(Username);
+
+    const getOrdersQuery = `SELECT * FROM orders WHERE CustomerID = ?`
+
+    data = [Username];
+
+    try {
+        const ordersOfCustomer = await query(getOrdersQuery, data);
+        console.log(ordersOfCustomer);
+        res.send({orders: ordersOfCustomer});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured."});
+    }
+});
 
 
 const PORT = process.env.PORT || 3001;

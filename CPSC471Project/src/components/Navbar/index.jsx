@@ -3,7 +3,7 @@ import './navbar.css';
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/logo.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSearch,  faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch, faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/Authorization/Authorized';
 import {
   Flex, Spacer, HStack, Image, Text, Input, Menu, MenuList, MenuButton, MenuItem, Button,
@@ -105,9 +105,14 @@ const NavBar = () => {
   }
 
   const routeChangeOrders = () => {
-      let path = '/customerorders'
-      navigate(path)
-    }
+    let path = '/orders'
+    navigate(path)
+  }
+
+  const routeChangeCustomerOrders = () => {
+    let path = '/customerorders'
+    navigate(path)
+  }
 
   const handleLogout = () => {
     logout();
@@ -165,7 +170,7 @@ const NavBar = () => {
             <>
               <Flex justifyContent="center">
                 <FontAwesomeIcon onClick={routeChangeOrders} icon={faCartShopping} style={{ color: "#776B5D", padding: "20px", display: isAdmin ? "none" : null, cursor: "pointer" }} size="xl" />
-                <div style={{display: itemCount == 0 ? "none" : null}} className="circle"> 
+                <div style={{ display: itemCount == 0 ? "none" : null }} className="circle">
                   <Text>{itemCount}</Text>
                 </div>
               </Flex>
@@ -176,7 +181,7 @@ const NavBar = () => {
                 </MenuButton>
                 <MenuList bg="#B0A695">
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeProfile}>Profile Info</MenuItem>
-                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeOrders}>Orders</MenuItem>
+                  <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={routeChangeCustomerOrders}>Orders</MenuItem>
                   <MenuItem bg="#B0A695" _hover={{ bg: '#776B5D' }} onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
