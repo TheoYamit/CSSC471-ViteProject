@@ -274,7 +274,7 @@ app.post('/addorder', async (req, res) => {
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
     const addPaymentQuery = `INSERT INTO payment (PaymentID, CustomerID, Total, CardNumber, CardDate, SecurityCode) VALUES (?, ?, ?, ?, ?, ?)`
-    const addOrderDetailQuery = `INSERT INTO order_details (OrderID, ProductID, Size, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?)`
+    const addOrderDetailQuery = `INSERT INTO order_details (OrderID, ProductID, Name, Size, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)`
     
     const { PaymentNum, CardNumber, CardDate, CardCVC, TotalAmount } = PaymentDetails;
 
@@ -285,8 +285,8 @@ app.post('/addorder', async (req, res) => {
         await query(addOrderQuery, addOrderData);
         await query(addPaymentQuery, addPaymentData);
 
-        Products.forEach( async ({ProductID, TotalPrice, Size, Quantity}) => {
-            await query(addOrderDetailQuery, [OrderID, ProductID, Size, Quantity, TotalPrice]);
+        Products.forEach( async ({ProductID, Name, TotalPrice, Size, Quantity}) => {
+            await query(addOrderDetailQuery, [OrderID, ProductID, Name, Size, Quantity, TotalPrice]);
         });
         res.send({status: "success", message: "Successfully placed order! Order Number: " + OrderID + ", Payment Number: " + PaymentNum})
     } catch(error) {
