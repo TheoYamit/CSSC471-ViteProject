@@ -285,7 +285,7 @@ app.post('/addorder', async (req, res) => {
         await query(addOrderQuery, addOrderData);
         await query(addPaymentQuery, addPaymentData);
 
-        Products.forEach( async ({OrderID, ProductID, TotalPrice, Size, Quantity}) => {
+        Products.forEach( async ({ProductID, TotalPrice, Size, Quantity}) => {
             await query(addOrderDetailQuery, [OrderID, ProductID, Size, Quantity, TotalPrice]);
         });
         res.send({status: "success", message: "Successfully placed order! Order Number: " + OrderID + ", Payment Number: " + PaymentNum})
@@ -309,6 +309,24 @@ app.post('/getcustomerorders', async (req, res) => {
         console.log(ordersOfCustomer);
         res.send({orders: ordersOfCustomer});
     } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured."});
+    }
+});
+
+app.post('/getorderdetails', async (req, res) => {
+    const { orderID } = req.body;
+    console.log("OrderID is, ", orderID);
+    
+    const getOrderDetailsQuery = `SELECT * FROM order_details WHERE OrderID = ?`
+
+    data = [orderID];
+
+    try {
+        const orderDetails = await query(getOrderDetailsQuery, data);
+        console.log(orderDetails);
+        res.send({orderdetails: orderDetails});
+    } catch(error) {
         console.log(error);
         res.status(500).send({message: "An error occured."});
     }
