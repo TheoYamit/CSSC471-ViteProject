@@ -35,7 +35,47 @@ const OrderDetails = () => {
 
   return (
     <>
-      <Flex>
+      <Text fontFamily="adineue PRO Bold" textAlign="center" sx={{ paddingTop: "30px" }} fontSize="5xl">Order #{OrderID} Details</Text>
+      <Flex
+        overflowX="scroll"
+        sx={{
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+        }}
+        scrollBehaviour="smooth"
+      >
+        <VStack w="full" py={10} spacing={4} alignItems="center">
+          <Box width="100">
+            <Table variant="simple">
+              <TableCaption>Order Details</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th fontSize="1xl">ProductID</Th>
+                  <Th fontSize="1xl">Name</Th>
+                  <Th fontSize="1xl">Size</Th>
+                  <Th fontSize="1xl">Quantity</Th>
+                  <Th fontSize="1xl">TotalPrice</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {orderDetails.map( ({ProductID, Name, Size, Quantity, TotalPrice}) => {
+                  return (
+                    <Tr>
+                      <Td>{ProductID}</Td>
+                      <Td>{Name}</Td>
+                      <Td>{Size}</Td>
+                      <Td>{Quantity}</Td>
+                      <Td>{TotalPrice}</Td>
+                    </Tr>
+                  )
+                })};
+              </Tbody>
+            </Table>
+          </Box>
+        </VStack>
 
       </Flex>
     </>

@@ -53,24 +53,9 @@ const ProductInfo = () => {
   }
 
   const handleAddToOrder = () => {
-    const listOfNumbers = "123456789"
-    const listOfLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    let newOrderID = "";
-    while (newOrderID.length < 10) {
-      let firstRand = Math.floor(Math.random() * 2); 
-    
-      if (firstRand === 0) {
-        let secondRand = Math.floor(Math.random() * listOfNumbers.length);
-        newOrderID += listOfNumbers[secondRand];
-      } else {
-        let secondRand = Math.floor(Math.random() * listOfLetters.length);
-        newOrderID += listOfLetters[secondRand];
-      }
-    }
-
     const product = {
-      OrderID: newOrderID,
       ProductID: productDetails.productID,
+      Name: productDetails.nameOfProduct,
       TotalPrice: productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2),
       Size: sizePressed.size,
       Quantity: numberOfItem, 
