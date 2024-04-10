@@ -84,3 +84,15 @@
     border-radius: 50%;
     background-color: #B0A695;
 }
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border-radius: 50%;
+}

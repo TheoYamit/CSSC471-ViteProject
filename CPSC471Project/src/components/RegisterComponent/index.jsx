@@ -38,6 +38,11 @@ const RegisterComponent = () => {
       message: message
     })
 
+    if (status == "success") {
+      setDetails(profile);
+      
+    }
+
 
   };
 

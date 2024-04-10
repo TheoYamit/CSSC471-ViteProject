@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './productinfo.css';
 import {
-  Flex, Box, VStack, HStack, Spacer, Image, Text, Input, Button, useBreakpointValue,
+  Flex, Box, VStack, HStack, Text, Button, useBreakpointValue,
   Alert, AlertIcon } from '@chakra-ui/react';
 import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew';
 import ProductBoxDiscounted from '../ProductBoxDiscounted';
 import ProductBoxNewDiscounted from '../ProductBoxNewDiscounted';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faPlus, faMinus, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useOrder } from '../../contexts/Order/Order';
-
+import { useAuth } from '../../contexts/Authorization/Authorized'
+ 
 const ProductInfo = () => {
   const [productDetails, setProductDetails] = useState({
     productID: null,
@@ -41,6 +42,7 @@ const ProductInfo = () => {
 
   const [numberOfItem, setNumberOfItem] = useState(1);
   const { addToOrder } = useOrder();
+  const { isAuthenticated } = useAuth();
 
 
   const handleSizePress = (size, stock) => {
@@ -51,24 +53,9 @@ const ProductInfo = () => {
   }
 
   const handleAddToOrder = () => {
-    const listOfNumbers = "123456789"
-    const listOfLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    let newOrderID = "";
-    while (newOrderID.length < 10) {
-      let firstRand = Math.floor(Math.random() * 2); 
-    
-      if (firstRand === 0) {
-        let secondRand = Math.floor(Math.random() * listOfNumbers.length);
-        newOrderID += listOfNumbers[secondRand];
-      } else {
-        let secondRand = Math.floor(Math.random() * listOfLetters.length);
-        newOrderID += listOfLetters[secondRand];
-      }
-    }
-
     const product = {
-      OrderID: newOrderID,
       ProductID: productDetails.productID,
+      Name: productDetails.nameOfProduct,
       TotalPrice: productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2),
       Size: sizePressed.size,
       Quantity: numberOfItem, 
@@ -240,7 +227,7 @@ const ProductInfo = () => {
             <Flex justifyContent="center">
               <VStack>
                 <Text>${productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2)}</Text>
-                <Button onClick={handleAddToOrder} isDisabled={sizePressed.size == null} bg="#EBE3D5" borderRadius="20px" px={10} py={8}>
+                <Button onClick={handleAddToOrder} isDisabled={sizePressed.size == null || !isAuthenticated} bg="#EBE3D5" borderRadius="20px" px={10} py={8}>
                   <HStack alignItems="center">
                     <FontAwesomeIcon icon={faCartShopping} />
                     <Text>Add to Order</Text>

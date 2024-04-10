@@ -40,19 +40,18 @@ const EditProductManagement = () => {
   });
 
   const [productDetails, setProductDetails] = useState({
-    productID: "",
-    nameOfProduct: "",
-    descOfProduct: "",
-    priceOfProduct: "",
-    imageOfProduct: "",
-    imageOfProductURL: "",
-    categoryOfProduct: "",
-    genderOfProduct: "",
+    productID: null,
+    nameOfProduct: null,
+    descOfProduct: null,
+    priceOfProduct: null,
+    imageOfProduct: null,
+    imageOfProductURL: null,
+    categoryOfProduct: null,
+    genderOfProduct: null,
     isNew: null,
     isDiscounted: null,
     previousPrice: null,
     discountedPrice: null
-
   });
 
   const [productID, setProductID] = useState({
