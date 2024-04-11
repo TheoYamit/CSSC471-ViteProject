@@ -332,6 +332,18 @@ app.post('/getorderdetails', async (req, res) => {
     }
 });
 
+app.get('/getusers', async (req, res) => {
+    const getUsers = `SELECT * FROM registeredusers`;
+    try {
+        const users = await query(getUsers);
+        res.send({listofusers: users});
+        console.log("Sent users to admin.")
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured"});
+    }
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
