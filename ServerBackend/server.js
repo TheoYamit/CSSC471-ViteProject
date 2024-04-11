@@ -332,10 +332,11 @@ app.post('/getorderdetails', async (req, res) => {
     }
 });
 
-app.get('/getusers', async (req, res) => {
-    const getUsers = `SELECT * FROM registeredusers`;
+app.get('/getuserswithorders', async (req, res) => {
+    const getUsers = `SELECT * FROM registeredusers JOIN orders ON orders.CustomerID = registeredusers.Username`;
     try {
         const users = await query(getUsers);
+        console.log(users)
         res.send({listofusers: users});
         console.log("Sent users to admin.")
     } catch (error) {
