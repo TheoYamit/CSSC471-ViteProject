@@ -119,6 +119,11 @@ const NavBar = () => {
     clearOrder();
   }
 
+  const routeChangeReview = () => {
+    let path = '/review'
+    navigate(path)
+  }
+
   return (
     <>
       <Flex bg="#F3EEEA" py={4} px={2} alignItems="center"
@@ -195,6 +200,9 @@ const NavBar = () => {
               </Button>
               <Button onClick={routeChangeRegister} bg="#776B5D" color="white" _hover={{ bg: "#8894a2" }} w="7rem">
                 Register
+              </Button>
+              <Button onClick={routeChangeReview} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="7rem">
+                Review
               </Button>
             </HStack>
           </>
