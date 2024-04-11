@@ -195,14 +195,14 @@ const NavBar = () => {
           :
           <>
             <HStack >
+            <Button onClick={routeChangeReview} bg="#7e2929" color="white" _hover={{ bg: "#1479ec" }} w="7rem">
+                Reviews
+              </Button>
               <Button onClick={routeChangeLogin} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="6rem">
                 Login
               </Button>
               <Button onClick={routeChangeRegister} bg="#776B5D" color="white" _hover={{ bg: "#8894a2" }} w="7rem">
                 Register
-              </Button>
-              <Button onClick={routeChangeReview} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="7rem">
-                Review
               </Button>
             </HStack>
           </>
