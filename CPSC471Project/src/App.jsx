@@ -10,6 +10,7 @@ import OrderPage from './pages/Orders/'
 import PaymentPage from './pages/Payment'
 import CustomerOrdersPage from './pages/CustomerOrdersPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
+import AdminOrdersPage from './pages/AdminPages/AdminOrdersPage'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '../src/contexts/Authorization/Authorized'
 import { OrderProvider } from './contexts/Order/Order'
@@ -31,6 +32,7 @@ function App() {
                         <Route path ='/customerorders' element={<CustomerOrdersPage/>}/>
                         <Route path='/customerorderdetails/:OrderID' element={<OrderDetailsPage/>}/>
                         <Route path='/adminproducts' element={<AdminProductsPage />} />
+                        <Route path='/adminorders' element={<AdminOrdersPage/>}/>
                     </Routes>
                 </OrderProvider>
             </AuthProvider>
