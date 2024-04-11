@@ -5,7 +5,6 @@ const ReviewPage = () => {
 
     return (
       <>
-        <NavBar/>
         <ReviewComponent/>
       </>
     );

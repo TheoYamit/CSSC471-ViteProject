@@ -77,6 +77,20 @@
     outline: none;
 }
 
+.review-button {
+  background-color: #7e2929;
+  border: none;
+}
+
+.review-button:hover {
+  background-color: #1479ec;
+}
+
+.review-button:focus {
+  background-color: #1479ec;;
+  outline: none;
+}
+
 .profile-button {
     padding: 10px;
     padding-left: 15px;
