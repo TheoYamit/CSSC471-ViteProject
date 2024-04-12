@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 import './productinfo.css';
 import {
   Flex, Box, VStack, HStack, Text, Button, useBreakpointValue,
-  Alert, AlertIcon } from '@chakra-ui/react';
+  Alert, AlertIcon, Table, Thead, Tbody, Tfoot, Tr, Th, Td,
+  TableCaption, TableContainer, Input, Textarea,
+} from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
 import ProductBox from '../ProductBox';
 import ProductBoxNew from '../ProductBoxNew';
 import ProductBoxDiscounted from '../ProductBoxDiscounted';
@@ -12,8 +15,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useOrder } from '../../contexts/Order/Order';
 import { useAuth } from '../../contexts/Authorization/Authorized'
- 
+
 const ProductInfo = () => {
+  let { ProductID } = useParams();
+
   const [productDetails, setProductDetails] = useState({
     productID: null,
     nameOfProduct: null,
@@ -38,12 +43,28 @@ const ProductInfo = () => {
     isVisible: false,
     status: "",
     message: ""
+  });
+
+  const [alertInfo2, setAlertInfo2] = useState({
+    isVisible: false,
+    status: "",
+    message: "",
   })
 
   const [numberOfItem, setNumberOfItem] = useState(1);
   const { addToOrder } = useOrder();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, userDetails } = useAuth();
 
+  const [charCount, setCharCount] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const [userReview, setUserReview] = useState({
+    Username: userDetails.Username,
+    ProductID: ProductID,
+    Review: 1,
+    DateCreated: null,
+    Rating: null,
+  });
 
   const handleSizePress = (size, stock) => {
     setSizePressed({
@@ -58,7 +79,7 @@ const ProductInfo = () => {
       Name: productDetails.nameOfProduct,
       TotalPrice: productDetails.isDiscounted == 1 ? (productDetails.discountedPrice * numberOfItem).toFixed(2) : (productDetails.priceOfProduct * numberOfItem).toFixed(2),
       Size: sizePressed.size,
-      Quantity: numberOfItem, 
+      Quantity: numberOfItem,
       ProductInfo: productDetails
     }
     addToOrder(product)
@@ -68,13 +89,6 @@ const ProductInfo = () => {
       message: "Product added to order!"
     })
   };
-
-
-
-
-
-
-  let { ProductID } = useParams();
 
   useEffect(() => {
     const getProductInventory = async (data) => {
@@ -145,9 +159,76 @@ const ProductInfo = () => {
 
   }, [ProductID]);
 
-  useEffect(() => {
-    console.log(sizePressed);
-  }, [sizePressed]);
+  const handleReviewTextChange = (event) => {
+    const { name, value } = event.target;
+
+    if (value.length <= 500) {
+      setUserReview(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+      setCharCount(value.length);
+    }
+  }
+
+  const handleRating = (rating) => {
+    setUserReview({ ...userReview, Rating: rating });
+  };
+
+  const handleMouseEnter = (rating) => {
+    setHoverRating(rating);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverRating(0);
+  };
+
+  const handleReviewOnSubmit = async (data) => {
+    const payload = {
+      Username: userDetails.Username,
+      ProductID: ProductID,
+      Review: userReview.Review,
+      DateCreated: new Date(),
+      Rating: userReview.Rating
+    }
+
+    console.log(payload);
+
+    const response = await fetch('http://localhost:3001/addreview', {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseFromServer = await response.json();
+
+    const { status, message } = responseFromServer;
+
+    setAlertInfo2({
+      isVisible: true,
+      status: status === "success" ? "success" : "error",
+      message: message
+    });
+
+    if (status == "success") {
+      setTimeout(() => {
+        setAlertInfo2({
+          isVisible: false,
+          status: "",
+          message: ""
+        })
+      }, 3000)
+    }
+
+  }
+
+  const handleReview = async (event) => {
+    event.preventDefault();
+
+    await handleReviewOnSubmit(userReview);
+  }
 
   const direction = useBreakpointValue({ base: "column", lg: "row" });
 
@@ -176,11 +257,11 @@ const ProductInfo = () => {
           </Component>
         </Box>
         <Box w={{ base: "100%", lg: "50%" }} px={3}>
-          {alertInfo.isVisible && 
-          <Alert status={alertInfo.status}>
-            <AlertIcon/>
-            {alertInfo.message}
-          </Alert>
+          {alertInfo.isVisible &&
+            <Alert status={alertInfo.status}>
+              <AlertIcon />
+              {alertInfo.message}
+            </Alert>
           }
 
           <VStack align="stretch" spacing={4}>
@@ -238,6 +319,62 @@ const ProductInfo = () => {
           </VStack>
         </Box>
       </Flex>
+
+      <Flex direction="column" p={5}>
+        <Text fontSize="4xl" fontFamily="adineue PRO Bold">Reviews</Text>
+        <Flex overflowX="scroll"
+          sx={{
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            '-ms-overflow-style': 'none',
+            'scrollbar-width': 'none',
+          }}
+          scrollBehaviour="smooth">
+          <Table>
+            <Thead>
+              <Tr>
+                <Th w="20%">Username</Th>
+                <Th>Review</Th>
+                <Th w="20%">Rating</Th>
+                <Th w="20%">Date</Th>
+              </Tr>
+            </Thead>
+          </Table>
+        </Flex>
+        <Box as="form" onSubmit={handleReview}>
+          <Text fontFamily="adineue PRO Bold" sx={{ marginTop: "20" }}>Submit your own review:</Text>
+          {alertInfo2.isVisible &&
+            <Alert status={alertInfo2.status}>
+              <AlertIcon />
+              {alertInfo2.message}
+            </Alert>
+          }
+          <Text>Review</Text>
+          <Textarea name="Review" value={userReview.Review} onChange={handleReviewTextChange} />
+          <Box textAlign="right" mt={2}>
+            <Text color="black">{charCount}/500</Text>
+          </Box>
+          <Box>
+            <Text>Rating</Text>
+            <Box display="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <StarIcon
+                  key={star}
+                  onClick={() => handleRating(star)}
+                  onMouseEnter={() => handleMouseEnter(star)}
+                  onMouseLeave={handleMouseLeave}
+                  color={(hoverRating || userReview.Rating) >= star ? "yellow.400" : "gray.300"}
+                  cursor="pointer"
+                  boxSize={6}
+                />
+              ))}
+            </Box>
+          </Box>
+          <Button sx={{ marginTop: "5" }} type="submit">Submit Review</Button>
+        </Box>
+      </Flex>
+
     </>
   );
 };
