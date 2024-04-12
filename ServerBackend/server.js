@@ -452,6 +452,18 @@ app.post('/getreviews', async (req, res) => {
     }
 });
 
+app.get('/getproductandname', async (req, res) => {
+    const getProductsQuery = `SELECT ProductID, Name, Category, Gender
+                              FROM products`;
+
+    try {
+        const listOfProducts = await query(getProductsQuery);
+        res.send({ products: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 
 
