@@ -19,7 +19,7 @@ import { faMoneyBillWave } from '@fortawesome/free-solid-svg-icons';
 
 const PaymentForOrder = () => {
 
-  const { orders } = useOrder();
+  const { orders, clearOrder } = useOrder();
   const { userDetails } = useAuth();
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -110,6 +110,7 @@ const PaymentForOrder = () => {
       status: status === "success" ? "success" : "error",
       message: message
     })
+    clearOrder();
 
   };
 

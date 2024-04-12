@@ -137,7 +137,7 @@ const AddInventory = () => {
         }));
 
         const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
-        
+
         const sortedInventory = updatedSizes.sort((a, b) => {
           return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
         });
@@ -154,14 +154,16 @@ const AddInventory = () => {
 
     }
 
-    setTimeout(() => {
-      toggleGotProduct()
-      setAlertInfo({
-        isVisible: false,
-        status: "",
-        message: ""
-      })
-    }, 3000);
+    if (status == 'success') {
+      setTimeout(() => {
+        toggleGotProduct()
+        setAlertInfo({
+          isVisible: false,
+          status: "",
+          message: ""
+        })
+      }, 3000);
+    }
 
 
   }
