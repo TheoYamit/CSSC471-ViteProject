@@ -148,27 +148,6 @@ const NavBar = () => {
         </HStack>
 
         <Spacer />
-        {isAdmin ?
-          <>
-            <HStack spacing={0}>
-              <Input display="none" borderColor="grey" _hover={{ borderColor: "grey" }} focusBorderColor="grey" borderRight="none" placeholder="I'm looking for..." sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}></Input>
-              <Button display="none" border="solid 1px" borderColor="grey" _hover={{ bg: "#EBE3D5" }} sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
-                <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
-              </Button>
-            </HStack>
-          </>
-          :
-          <>
-            <HStack spacing={0}>
-              <Input id="search-bar" borderColor="grey" _hover={{ borderColor: "grey" }} focusBorderColor="grey" borderRight="none" placeholder="I'm looking for..." sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}></Input>
-              <Button id="search-button" bg="transparent" border="solid 1px" borderColor="grey" _hover={{ bg: "#EBE3D5" }} sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
-                <FontAwesomeIcon icon={faSearch} style={{ color: "#000000" }} />
-              </Button>
-            </HStack>
-          </>
-        }
-
-        <Spacer />
 
         {isAuthenticated ?
           (
@@ -195,9 +174,6 @@ const NavBar = () => {
           :
           <>
             <HStack >
-            <Button onClick={routeChangeReview} bg="#7e2929" color="white" _hover={{ bg: "#1479ec" }} w="7rem">
-                Reviews
-              </Button>
               <Button onClick={routeChangeLogin} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="6rem">
                 Login
               </Button>

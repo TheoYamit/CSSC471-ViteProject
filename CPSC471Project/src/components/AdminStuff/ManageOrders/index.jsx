@@ -13,6 +13,15 @@ const ManageOrders = () => {
   const [currentIndex, setCurrentIndex] = useState();
   const [currentOrderDetails, setCurrentOrderDetails] = useState([]);
   const [alertInfo, setAlertInfo] = useState({ isVisible: false, status: "", message: "" });
+  const [sortExpectedDate, setSortExpectedDate] = useState(false);
+
+  useEffect(() => {
+    console.log(sortExpectedDate);
+    if (sortExpectedDate) {
+      sortByExpectedDate();
+      setSortExpectedDate(false);
+    }
+  }, [users, sortExpectedDate])
 
   useEffect(() => {
     getUsers();
@@ -25,7 +34,19 @@ const ManageOrders = () => {
     const responseFromServer = await response.json();
     const { listofusers } = responseFromServer;
     setUsers(listofusers);
+
   }
+
+  const getUsersExpectedDate = async () => {
+      const response = await fetch('http://localhost:3001/getuserswithorders', {
+        method: "GET",
+      });
+      const responseFromServer = await response.json();
+      const { listofusers } = responseFromServer;
+      setUsers(listofusers);
+      setSortExpectedDate(true);
+    }
+  
 
 
   // Debugging stuff
@@ -112,18 +133,17 @@ const ManageOrders = () => {
     const responseFromServer = await response.json()
     const { listofusers } = responseFromServer;
     
-    setUsers(listofusers)
+    setUsers(listofusers);
   }
 
 
   const handleFilterOnChange = (event) => {
     const value = event.target.value;
     if (value == "ExpectedDays") {
-      getUsers();
-      sortByExpectedDate();
+      getUsersExpectedDate();
     }
     if (value == "NoFilter") getUsers();
-    if (value == "ProcessedOrders") getProcessedOrders();
+    if (value == "ProcessedOrders") getProcessedOrders(); 
     if (value == "ShippedOrders") getShippedOrders();
     if (value == "DeliveredOrders") getDeliveredOrders();
   }
