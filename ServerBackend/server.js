@@ -432,6 +432,26 @@ app.post('/addreview', async (req, res) => {
     }
 });
 
+app.post('/getreviews', async (req, res) => {
+    const { productID } = req.body;
+
+    const getReviewsQuery = `SELECT Username, ProductID, Review, DateCreated, Rating
+                             FROM reviews
+                             WHERE reviews.ProductID = ?`;
+
+    const data = [productID];
+
+    try {
+        const reviews = await query(getReviewsQuery, data);
+        if (reviews == []) throw Error;
+        console.log(reviews);
+        res.send({listofreviews: reviews});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured."})
+    }
+});
+
 
 
 
