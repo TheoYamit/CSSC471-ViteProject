@@ -81,11 +81,51 @@ const ManageOrders = () => {
     setUsers(sortedUsers);
   };
 
+  const getProcessedOrders = async () => {
+    const response = await fetch('http://localhost:3001/getuserordersprocessed', {
+      method: "GET"
+    });
+    const responseFromServer = await response.json();
+    const { listofusers } = responseFromServer;
+    
+    setUsers(listofusers)
+
+  }
+
+  const getShippedOrders = async () => {
+    const response = await fetch('http://localhost:3001/getuserordersshipped', {
+      method: "GET"
+    });
+    
+    const responseFromServer = await response.json();
+
+    const { listofusers } = responseFromServer;
+
+    setUsers(listofusers)
+  }
+
+  const getDeliveredOrders = async () => {
+    const response = await fetch('http://localhost:3001/getuserordersdelivered', {
+      method: "GET"
+    });
+
+    const responseFromServer = await response.json()
+    const { listofusers } = responseFromServer;
+    
+    setUsers(listofusers)
+  }
+
 
   const handleFilterOnChange = (event) => {
     const value = event.target.value;
-    if (value == "ExpectedDays") sortByExpectedDate();
+    if (value == "ExpectedDays") {
+      getUsers();
+      sortByExpectedDate();
+    }
     if (value == "NoFilter") getUsers();
+    if (value == "ProcessedOrders") getProcessedOrders();
+    if (value == "ShippedOrders") getShippedOrders();
+    if (value == "DeliveredOrders") getDeliveredOrders();
   }
 
   const handleStatusChange = async (OrderID, Status) => {

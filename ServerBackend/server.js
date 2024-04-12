@@ -362,6 +362,40 @@ app.get('/getuserordersprocessed', async (req, res) => {
     }
 });
 
+app.get('/getuserordersshipped', async (req, res) => {
+    const getOrdersProcessed = `
+            SELECT registeredusers.*, orders.* 
+            FROM registeredusers 
+            JOIN orders ON orders.CustomerID = registeredusers.Username 
+            WHERE orders.Status = 'Shipped'`;
+    try {
+        const users = await query(getOrdersProcessed);
+        console.log(users);
+        res.send({listofusers: users});
+        console.log("Sent users with shipped orders to admin.");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured"});
+    }
+});
+
+app.get('/getuserordersdelivered', async (req, res) => {
+    const getOrdersProcessed = `
+            SELECT registeredusers.*, orders.* 
+            FROM registeredusers 
+            JOIN orders ON orders.CustomerID = registeredusers.Username 
+            WHERE orders.Status = 'Delivered'`;
+    try {
+        const users = await query(getOrdersProcessed);
+        console.log(users);
+        res.send({listofusers: users});
+        console.log("Sent users with delivered orders to admin.");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({message: "An error occured"});
+    }
+});
+
 app.post('/updatestatusoforder', async (req, res) => {
     const { orderID, status } = req.body;
 
@@ -377,9 +411,10 @@ app.post('/updatestatusoforder', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send({status: "error", message: "Error updating status for Order: #" + orderID});
-    }
-                               
+    }                    
 });
+
+
 
 
 const PORT = process.env.PORT || 3001;
