@@ -6,7 +6,7 @@ import MainPageBodyThree from '../../components/MainPageBodyThree';
 import MainPageBodyFour from '../../components/MainPageBodyFour';
 import AdminProduct from '../../components/AdminStuff/AdminProduct';
 import AdminOrders from '../../components/AdminStuff/AdminOrders';
-import AdminReviews from '../../components/AdminStuff/AdminRewiews'
+import AdminReviews from '../../components/AdminStuff/AdminReviews'
 import { useAuth } from '../../contexts/Authorization/Authorized';
 
 const Home = () => {
