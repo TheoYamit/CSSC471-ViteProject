@@ -66,6 +66,8 @@ const ProductInfo = () => {
     Rating: null,
   });
 
+  const [listOfReviews, setListOfReviews] = useState([]);
+
   const handleSizePress = (size, stock) => {
     setSizePressed({
       size: size,
@@ -159,6 +161,34 @@ const ProductInfo = () => {
 
   }, [ProductID]);
 
+  const getReviews = async () => {
+    const payload = { productID: ProductID }
+
+    const response = await fetch('http://localhost:3001/getreviews', {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseFromServer = await response.json();
+    const { listofreviews } = responseFromServer;
+
+    for (let index = 0; index < listofreviews.length; index++) {
+      let date = listofreviews[index].DateCreated;
+      console.log(date);
+      let datePart = date.split("T")[0];
+      listofreviews[index].DateCreated = datePart;
+    }
+
+    setListOfReviews(listofreviews);
+  }
+
+  useEffect(() => {
+    getReviews();
+  }, [])
+
   const handleReviewTextChange = (event) => {
     const { name, value } = event.target;
 
@@ -221,7 +251,6 @@ const ProductInfo = () => {
         })
       }, 3000)
     }
-
   }
 
   const handleReview = async (event) => {
@@ -322,7 +351,8 @@ const ProductInfo = () => {
 
       <Flex direction="column" p={5}>
         <Text fontSize="4xl" fontFamily="adineue PRO Bold">Reviews</Text>
-        <Flex overflowX="scroll"
+        <TableContainer
+          overflowX="scroll"
           sx={{
             '&::-webkit-scrollbar': {
               display: 'none',
@@ -340,8 +370,33 @@ const ProductInfo = () => {
                 <Th w="20%">Date</Th>
               </Tr>
             </Thead>
+            <Tbody>
+              {listOfReviews == [] ?
+                <Text>No reviews</Text> :
+                listOfReviews.map(({ Username, Review, DateCreated, Rating }) => {
+                  return (
+                    <Tr>
+                      <Th>{Username}</Th>
+                      <Th>{Review}</Th>
+                      <Th>
+                        <Box>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <StarIcon
+                              key={star}
+                              color={star <= Rating ? "yellow.500" : "gray.300"}
+                              boxSize={6}
+                            />
+                          ))}
+
+                        </Box>
+                      </Th>
+                      <Th>{DateCreated}</Th>
+                    </Tr>
+                  )
+                })}
+            </Tbody>
           </Table>
-        </Flex>
+        </TableContainer>
         <Box as="form" onSubmit={handleReview}>
           <Text fontFamily="adineue PRO Bold" sx={{ marginTop: "20" }}>Submit your own review:</Text>
           {alertInfo2.isVisible &&
@@ -373,7 +428,7 @@ const ProductInfo = () => {
           </Box>
           <Button sx={{ marginTop: "5" }} type="submit">Submit Review</Button>
         </Box>
-      </Flex>
+      </Flex >
 
     </>
   );
