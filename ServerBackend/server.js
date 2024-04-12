@@ -414,6 +414,24 @@ app.post('/updatestatusoforder', async (req, res) => {
     }                    
 });
 
+app.post('/addreview', async (req, res) => {
+    const { Username, ProductID, Review, DateCreated, Rating } = req.body;
+
+    const addReviewQuery  = `INSERT INTO reviews (Username, ProductID, Review, DateCreated, Rating)
+                             VALUES (?, ?, ?, ?, ?)`;
+
+    data = [Username, ProductID, Review, DateCreated, Rating];
+    console.log(data);
+
+    try {
+        await query(addReviewQuery, data);
+        res.send({status: "success", message: "Review submitted successfully."})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({status: "error", message: "Error occured. Couldn't submit review."})
+    }
+});
+
 
 
 

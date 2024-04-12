@@ -119,6 +119,11 @@ const NavBar = () => {
     clearOrder();
   }
 
+  const routeChangeReview = () => {
+    let path = '/review'
+    navigate(path)
+  }
+
   return (
     <>
       <Flex bg="#F3EEEA" py={4} px={2} alignItems="center"
@@ -190,6 +195,9 @@ const NavBar = () => {
           :
           <>
             <HStack >
+            <Button onClick={routeChangeReview} bg="#7e2929" color="white" _hover={{ bg: "#1479ec" }} w="7rem">
+                Reviews
+              </Button>
               <Button onClick={routeChangeLogin} bg="#B0A695" color="white" _hover={{ bg: "#4f596a" }} w="6rem">
                 Login
               </Button>
