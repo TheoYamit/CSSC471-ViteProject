@@ -113,15 +113,16 @@ const EditProductManagement = () => {
       }
 
     }
-
-    setTimeout(() => {
-      toggleGotProduct()
-      setAlertInfo({
-        isVisible: false,
-        status: "",
-        message: ""
-      })
-    }, 3000);
+    if (status == 'success') {
+      setTimeout(() => {
+        toggleGotProduct();
+        setAlertInfo({
+          isVisible: false,
+          status: "",
+          message: ""
+        })
+      }, 3000);
+    }
   };
 
   const handleGetProduct = async (event) => {
@@ -165,7 +166,7 @@ const EditProductManagement = () => {
     formData.append('nameOfProduct', productDetails.nameOfProduct);
     formData.append('descOfProduct', productDetails.descOfProduct);
     formData.append('priceOfProduct', productDetails.priceOfProduct);
-    
+
     if (file) {
       formData.append('imageOfProduct', productDetails.imageOfProduct);
     }
