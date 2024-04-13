@@ -31,6 +31,11 @@ const PaymentForOrder = () => {
     message: ""
   })
 
+  // For debugging
+  useEffect(() => {
+    console.log(orders)
+  }, [])
+
   useEffect(() => {
     let newItemCount = 0;
     orders.forEach(({ Quantity }) => {
@@ -110,6 +115,15 @@ const PaymentForOrder = () => {
       status: status === "success" ? "success" : "error",
       message: message
     })
+
+    const response2 = await fetch('http://localhost:3001/updateinventory', {
+        method: "POST",
+        headers: {
+            "Content-type" : "application/json"
+        },
+        body: JSON.stringify(orders)
+    });
+
     clearOrder();
 
   };
