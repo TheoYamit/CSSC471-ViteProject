@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  Flex, Text, Box, Table, Thead, Tbody, Tfoot, Tr, Th,
+  Flex, Text, Box, Select, Table, Thead, Tbody, Tfoot, Tr, Th,
   Td, TableCaption, TableContainer, useBreakpointValue
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
@@ -66,12 +66,42 @@ const AdminReviewComponent = () => {
     console.log(listOfProducts);
   }, []);
 
+  const getHasReviews = async () => {
+    const response = await fetch('http://localhost:3001/hasreviews', {
+      method: "GET"
+    })
+
+    const responseFromServer = await response.json();
+    const { listofproducts } = responseFromServer;
+    setListOfProducts(listofproducts);
+  }
+
+  const handleFilterOnChange = (event) => {
+    const value = event.target.value;
+    if (value == "HasReviews") getHasReviews();
+    if (value == "NoFilter") getProducts();
+  }
+
   return (
     <>
       <Flex direction={direction} justifyContent="space-between" alignContent="start" alignItems={{ base: "center", lg: "flex-start" }} p={5}>
         <Box w={{ base: "95%", lg: "50%" }}>
           <Text fontSize="3xl" textAlign="center" fontFamily="adineue PRO Bold">Products</Text>
-          <TableContainer>
+          <Select onChange={handleFilterOnChange} w="33%" placeholder='Filter by...'>
+            <option value="NoFilter">No Filter</option>
+            <option value="HasReviews">Has Reviews</option>
+          </Select>
+          <TableContainer
+            direction="row"
+            overflowX="scroll"
+            sx={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none',
+            }}
+            scrollBehaviour="smooth">
             <Table>
               <Thead>
                 <Tr>
@@ -97,7 +127,7 @@ const AdminReviewComponent = () => {
           </TableContainer>
         </Box>
         <Box w={{ base: "95%", lg: "50%" }}>
-          <Text fontSize="3xl" textAlign="center" fontFamily="adineue PRO Bold">Reviews for Order #{currentProduct}</Text>
+          <Text marginBottom={{ base: "0", lg: "40px" }} fontSize="3xl" textAlign="center" fontFamily="adineue PRO Bold">Reviews for Order #{currentProduct}</Text>
           <TableContainer
             overflowX="scroll"
             sx={{

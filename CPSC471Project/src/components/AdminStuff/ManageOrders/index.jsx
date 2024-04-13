@@ -4,6 +4,7 @@ import {
   Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer,
   Alert, AlertIcon
 } from '@chakra-ui/react';
+import { Payment } from '@mui/icons-material';
 
 const ManageOrders = () => {
 
@@ -14,6 +15,7 @@ const ManageOrders = () => {
   const [currentOrderDetails, setCurrentOrderDetails] = useState([]);
   const [alertInfo, setAlertInfo] = useState({ isVisible: false, status: "", message: "" });
   const [sortExpectedDate, setSortExpectedDate] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState([]);
 
   useEffect(() => {
     console.log(sortExpectedDate);
@@ -34,19 +36,18 @@ const ManageOrders = () => {
     const responseFromServer = await response.json();
     const { listofusers } = responseFromServer;
     setUsers(listofusers);
-
   }
 
   const getUsersExpectedDate = async () => {
-      const response = await fetch('http://localhost:3001/getuserswithorders', {
-        method: "GET",
-      });
-      const responseFromServer = await response.json();
-      const { listofusers } = responseFromServer;
-      setUsers(listofusers);
-      setSortExpectedDate(true);
-    }
-  
+    const response = await fetch('http://localhost:3001/getuserswithorders', {
+      method: "GET",
+    });
+    const responseFromServer = await response.json();
+    const { listofusers } = responseFromServer;
+    setUsers(listofusers);
+    setSortExpectedDate(true);
+  }
+
 
 
   // Debugging stuff
@@ -61,6 +62,10 @@ const ManageOrders = () => {
   useEffect(() => {
     console.log(currentOrderDetails)
   }, [currentOrderDetails])
+
+  useEffect(() => {
+    console.log("Payment", paymentDetails);
+  }, paymentDetails)
 
   const getOrderDetails = async (OrderID) => {
     console.log("OrderID to send: ", OrderID);
@@ -80,8 +85,27 @@ const ManageOrders = () => {
     setCurrentOrderDetails(orderdetails);
   }
 
-  const handleOrderClick = (OrderID, index) => {
+  const getPaymentDetails = async (PaymentID) => {
+    console.log("PaymentID to send: ", PaymentID);
+    const payload = { paymentID: PaymentID }
+    const response = await fetch('http://localhost:3001/getpaymentdetails', {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseFromServer = await response.json();
+
+    const { paymentdetails } = responseFromServer;
+
+    setPaymentDetails(paymentdetails);
+  }
+
+  const handleOrderClick = (OrderID, PaymentID, index) => {
     console.log(OrderID);
+    getPaymentDetails(PaymentID);
     setCurrentOrder(OrderID);
     setCurrentIndex(index)
     getOrderDetails(OrderID)
@@ -108,7 +132,7 @@ const ManageOrders = () => {
     });
     const responseFromServer = await response.json();
     const { listofusers } = responseFromServer;
-    
+
     setUsers(listofusers)
 
   }
@@ -117,7 +141,7 @@ const ManageOrders = () => {
     const response = await fetch('http://localhost:3001/getuserordersshipped', {
       method: "GET"
     });
-    
+
     const responseFromServer = await response.json();
 
     const { listofusers } = responseFromServer;
@@ -132,7 +156,7 @@ const ManageOrders = () => {
 
     const responseFromServer = await response.json()
     const { listofusers } = responseFromServer;
-    
+
     setUsers(listofusers);
   }
 
@@ -143,7 +167,7 @@ const ManageOrders = () => {
       getUsersExpectedDate();
     }
     if (value == "NoFilter") getUsers();
-    if (value == "ProcessedOrders") getProcessedOrders(); 
+    if (value == "ProcessedOrders") getProcessedOrders();
     if (value == "ShippedOrders") getShippedOrders();
     if (value == "DeliveredOrders") getDeliveredOrders();
   }
@@ -171,7 +195,7 @@ const ManageOrders = () => {
     if (status == "success") {
       const updatedUsers = users.map(user => {
         if (user.OrderID === OrderID) {
-          return {...user, Status: Status}
+          return { ...user, Status: Status }
         }
         return user;
       });
@@ -203,10 +227,10 @@ const ManageOrders = () => {
             </Select>
 
             {alertInfo.isVisible &&
-            <Alert status={alertInfo.status}>
-              <AlertIcon/>
-              {alertInfo.message}
-            </Alert>
+              <Alert status={alertInfo.status}>
+                <AlertIcon />
+                {alertInfo.message}
+              </Alert>
             }
           </HStack>
           <Table>
@@ -219,11 +243,11 @@ const ManageOrders = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {users.map(({ Username, OrderID, Status, ExpectedDays }, index) => {
+              {users.map(({ Username, OrderID, PaymentID, Status, ExpectedDays }, index) => {
                 return (
                   <Tr>
                     <Th>{Username}</Th>
-                    <Th sx={{ cursor: "pointer" }} _hover={{ bg: "#D3D3D3" }} onClick={() => handleOrderClick(OrderID, index)}>{OrderID}</Th>
+                    <Th sx={{ cursor: "pointer" }} _hover={{ bg: "#D3D3D3" }} onClick={() => handleOrderClick(OrderID, PaymentID, index)}>{OrderID}</Th>
                     <Th>
                       <Select
                         value={Status}
@@ -244,28 +268,67 @@ const ManageOrders = () => {
         </Box>
         <Box w={{ base: "95%", lg: "50%" }} marginTop={{ base: "35", lg: "0" }}>
           <Text marginBottom={{ base: "0", lg: "40px" }} fontSize="3xl" textAlign="center" fontFamily="adineue PRO Bold">Order Details For #{currentOrder}</Text>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th fontSize="1xl">ProductID</Th>
-                <Th fontSize="1xl">Name</Th>
-                <Th fontSize="1xl">Size</Th>
-                <Th fontSize="1xl">Quantity</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {currentOrderDetails.map(({ ProductID, Name, Size, Quantity }) => {
-                return (
-                  <Tr>
-                    <Th>{ProductID}</Th>
-                    <Th>{Name}</Th>
-                    <Th>{Size}</Th>
-                    <Th>{Quantity}</Th>
-                  </Tr>
-                )
-              })}
-            </Tbody>
-          </Table>
+          <TableContainer>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th fontSize="1xl">Product ID</Th>
+                  <Th fontSize="1xl">Name</Th>
+                  <Th fontSize="1xl">Size</Th>
+                  <Th fontSize="1xl">Quantity</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {currentOrderDetails.map(({ ProductID, Name, Size, Quantity }) => {
+                  return (
+                    <Tr>
+                      <Th>{ProductID}</Th>
+                      <Th>{Name}</Th>
+                      <Th>{Size}</Th>
+                      <Th>{Quantity}</Th>
+                    </Tr>
+                  )
+                })}
+              </Tbody>
+            </Table>
+
+          </TableContainer>
+          <TableContainer marginTop={{ base: "40" }}
+            direction="row"
+            overflowX="scroll"
+            sx={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none',
+            }}
+            scrollBehaviour="smooth">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th fontSize="1xl">Payment ID</Th>
+                  <Th fontSize="1xl">Total</Th>
+                  <Th fontSize="1xl">Card Number</Th>
+                  <Th fontSize="1xl">Card Date</Th>
+                  <Th fontSize="1xl">Security Code</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {paymentDetails.map(({ PaymentID, Total, CardNumber, CardDate, SecurityCode }) => {
+                  return (
+                    <Tr>
+                      <Th>{PaymentID}</Th>
+                      <Th>${Total}</Th>
+                      <Th>{CardNumber}</Th>
+                      <Th>{CardDate}</Th>
+                      <Th>{SecurityCode}</Th>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
         </Box>
       </Flex>
     </>

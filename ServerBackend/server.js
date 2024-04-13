@@ -562,6 +562,39 @@ app.get('/getbeauty', async (req, res) => {
     }
 });
 
+app.get('/hasreviews', async (req, res) => {
+    const getHasReviewsQuery = `SELECT p.ProductID, p.Name, p.Category, p.Gender
+                                FROM products AS p
+                                INNER JOIN reviews AS r ON r.ProductID = p.ProductID
+                                GROUP BY p.ProductID, p.Name, p.Category, p.Gender`
+
+    try {
+        const products = await query(getHasReviewsQuery);
+        res.send({listofproducts: products});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.post('/getpaymentdetails', async (req, res) => {
+    const { paymentID } = req.body;
+
+    const getPaymentDetailsQuery = `SELECT *
+                                    FROM payment
+                                    WHERE PaymentID = ?`
+
+    const data = [paymentID];
+
+    try {
+        const details = await query(getPaymentDetailsQuery, data);
+        console.log(details);
+        res.send({paymentdetails: details});
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 
 
