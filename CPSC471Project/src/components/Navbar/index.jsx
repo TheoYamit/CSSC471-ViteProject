@@ -13,6 +13,7 @@ import { Drawer } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useOrder } from '../../contexts/Order/Order';
+import { use } from 'bcrypt/promises';
 
 
 const categories = [
@@ -205,13 +206,13 @@ const NavBar = () => {
           <Typography variant="h6" sx={{ color: '#333' }}>Urban Weave</Typography>
         </Flex>
         <Divider />
-        <Button>Men</Button>
-        <Button>Women</Button>
-        <Button>Unisex</Button>
+        <Button onClick={() => navigate('/men')}>Men</Button>
+        <Button onClick={() => navigate('/women')}>Women</Button>
+        <Button onClick={() => navigate('/unisex')}>Unisex</Button>
         <Divider />
-        <Button>Clothing</Button>
-        <Button>Shoes</Button>
-        <Button>Beauty Products</Button>
+        <Button onClick={() => navigate('/clothing')}>Clothing</Button>
+        <Button onClick={() => navigate('/shoes')}>Shoes</Button>
+        <Button onClick={() => navigate('/beauty')}>Beauty Products</Button>
       </Drawer>
     </>
   );

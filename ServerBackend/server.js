@@ -490,6 +490,78 @@ app.get('/getproductandname', async (req, res) => {
     }
 });
 
+app.get('/getmen', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Gender = 'Male'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/getwomen', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Gender = 'Female'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/getunisex', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Gender = 'Unisex'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/getclothing', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Category = 'Clothing'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/getshoes', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Category = 'Shoes'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get('/getbeauty', async (req, res) => {
+    const getMenQuery = `SELECT *
+                         FROM products
+                         WHERE Category = 'Beauty Products'`
+    try {
+        const listOfProducts = await query(getMenQuery);
+        res.send({listofproducts: listOfProducts});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 
 
