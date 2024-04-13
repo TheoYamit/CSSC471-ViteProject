@@ -6,8 +6,8 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 
 const mysql = require('mysql2');
 
 const app = express({ limit: "50mb" });
-app.use(express.json({limit: "50mb"}));
-app.use(express.urlencoded({extended: "true", limit: '50mb'}));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: "true", limit: '50mb' }));
 app.use(cors({
     origin: '*'
 }));
@@ -266,16 +266,42 @@ app.post('/addinventory', async (req, res) => {
     }
 });
 
+app.post('/updateinventory', async (req, res) => {
+    const inventoryData = req.body;
+    console.log("Inventory data: ", inventoryData)
+    try {
+        const queryInsertInventory = `UPDATE inventory
+                                      SET Stock = ?
+                                      WHERE ProductID = ? AND Size = ?`;
+        const getStockQuery = `SELECT Stock
+                               FROM inventory
+                               WHERE ProductID = ? AND Size = ?`
+        for (const item of inventoryData) {
+            let currentStockResults = await query(getStockQuery, [item.ProductID, item.Size]);
+            if (currentStockResults.length > 0) {
+                let currentStock = currentStockResults[0].Stock;
+                let newStock = currentStock - item.Quantity;
+                await query(queryInsertInventory, [newStock, item.ProductID, item.Size]);
+            }
+        }
+
+        res.send({ status: "success", message: "Successfully updated inventory for product."})
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ status: "error", message: "Could not update inventory!" });
+    }
+});
+
 app.post('/addorder', async (req, res) => {
     console.log(req.body);
-    const { OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentDetails, Status, ExpectedDays, Products} = req.body;
-    
+    const { OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentDetails, Status, ExpectedDays, Products } = req.body;
+
     const addOrderQuery = `INSERT INTO orders (OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentID, Status, ExpectedDays)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
     const addPaymentQuery = `INSERT INTO payment (PaymentID, CustomerID, Total, CardNumber, CardDate, SecurityCode) VALUES (?, ?, ?, ?, ?, ?)`
     const addOrderDetailQuery = `INSERT INTO order_details (OrderID, ProductID, Name, Size, Quantity, TotalPrice) VALUES (?, ?, ?, ?, ?, ?)`
-    
+
     const { PaymentNum, CardNumber, CardDate, CardCVC, TotalAmount } = PaymentDetails;
 
     const addOrderData = [OrderID, CustomerID, Name, Address, Country, Postal, DateOfOrder, PaymentNum, Status, ExpectedDays]
@@ -285,13 +311,13 @@ app.post('/addorder', async (req, res) => {
         await query(addOrderQuery, addOrderData);
         await query(addPaymentQuery, addPaymentData);
 
-        Products.forEach( async ({ProductID, Name, TotalPrice, Size, Quantity}) => {
+        Products.forEach(async ({ ProductID, Name, TotalPrice, Size, Quantity }) => {
             await query(addOrderDetailQuery, [OrderID, ProductID, Name, Size, Quantity, TotalPrice]);
         });
-        res.send({status: "success", message: "Successfully placed order! Order Number: " + OrderID + ", Payment Number: " + PaymentNum})
-    } catch(error) {
+        res.send({ status: "success", message: "Successfully placed order! Order Number: " + OrderID + ", Payment Number: " + PaymentNum })
+    } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "An error occured. "})
+        res.status(500).send({ status: "error", message: "An error occured. " })
     }
 
 });
@@ -307,17 +333,17 @@ app.post('/getcustomerorders', async (req, res) => {
     try {
         const ordersOfCustomer = await query(getOrdersQuery, data);
         console.log(ordersOfCustomer);
-        res.send({orders: ordersOfCustomer});
+        res.send({ orders: ordersOfCustomer });
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured."});
+        res.status(500).send({ message: "An error occured." });
     }
 });
 
 app.post('/getorderdetails', async (req, res) => {
     const { orderID } = req.body;
     console.log("OrderID is, ", orderID);
-    
+
     const getOrderDetailsQuery = `SELECT * FROM order_details WHERE OrderID = ?`
 
     data = [orderID];
@@ -325,10 +351,10 @@ app.post('/getorderdetails', async (req, res) => {
     try {
         const orderDetails = await query(getOrderDetailsQuery, data);
         console.log(orderDetails);
-        res.send({orderdetails: orderDetails});
-    } catch(error) {
+        res.send({ orderdetails: orderDetails });
+    } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured."});
+        res.status(500).send({ message: "An error occured." });
     }
 });
 
@@ -337,11 +363,11 @@ app.get('/getuserswithorders', async (req, res) => {
     try {
         const users = await query(getUsers);
         console.log(users)
-        res.send({listofusers: users});
+        res.send({ listofusers: users });
         console.log("Sent users to admin.")
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured"});
+        res.status(500).send({ message: "An error occured" });
     }
 });
 
@@ -354,11 +380,11 @@ app.get('/getuserordersprocessed', async (req, res) => {
     try {
         const users = await query(getOrdersProcessed);
         console.log(users);
-        res.send({listofusers: users});
+        res.send({ listofusers: users });
         console.log("Sent users with processed orders to admin.");
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured"});
+        res.status(500).send({ message: "An error occured" });
     }
 });
 
@@ -371,11 +397,11 @@ app.get('/getuserordersshipped', async (req, res) => {
     try {
         const users = await query(getOrdersProcessed);
         console.log(users);
-        res.send({listofusers: users});
+        res.send({ listofusers: users });
         console.log("Sent users with shipped orders to admin.");
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured"});
+        res.status(500).send({ message: "An error occured" });
     }
 });
 
@@ -388,11 +414,11 @@ app.get('/getuserordersdelivered', async (req, res) => {
     try {
         const users = await query(getOrdersProcessed);
         console.log(users);
-        res.send({listofusers: users});
+        res.send({ listofusers: users });
         console.log("Sent users with delivered orders to admin.");
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured"});
+        res.status(500).send({ message: "An error occured" });
     }
 });
 
@@ -407,17 +433,17 @@ app.post('/updatestatusoforder', async (req, res) => {
 
     try {
         await query(updateStatusQuery, data);
-        res.send({status: "success", message: "Status successfully updated for Order: #" + orderID});
+        res.send({ status: "success", message: "Status successfully updated for Order: #" + orderID });
     } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "Error updating status for Order: #" + orderID});
-    }                    
+        res.status(500).send({ status: "error", message: "Error updating status for Order: #" + orderID });
+    }
 });
 
 app.post('/addreview', async (req, res) => {
     const { Username, ProductID, Review, DateCreated, Rating } = req.body;
 
-    const addReviewQuery  = `INSERT INTO reviews (Username, ProductID, Review, DateCreated, Rating)
+    const addReviewQuery = `INSERT INTO reviews (Username, ProductID, Review, DateCreated, Rating)
                              VALUES (?, ?, ?, ?, ?)`;
 
     data = [Username, ProductID, Review, DateCreated, Rating];
@@ -425,10 +451,10 @@ app.post('/addreview', async (req, res) => {
 
     try {
         await query(addReviewQuery, data);
-        res.send({status: "success", message: "Review submitted successfully."})
+        res.send({ status: "success", message: "Review submitted successfully." })
     } catch (error) {
         console.log(error);
-        res.status(500).send({status: "error", message: "Error occured. Couldn't submit review."})
+        res.status(500).send({ status: "error", message: "Error occured. Couldn't submit review." })
     }
 });
 
@@ -445,10 +471,10 @@ app.post('/getreviews', async (req, res) => {
         const reviews = await query(getReviewsQuery, data);
         if (reviews == []) throw Error;
         console.log(reviews);
-        res.send({listofreviews: reviews});
+        res.send({ listofreviews: reviews });
     } catch (error) {
         console.log(error);
-        res.status(500).send({message: "An error occured."})
+        res.status(500).send({ message: "An error occured." })
     }
 });
 
@@ -458,7 +484,7 @@ app.get('/getproductandname', async (req, res) => {
 
     try {
         const listOfProducts = await query(getProductsQuery);
-        res.send({ products: listOfProducts});
+        res.send({ products: listOfProducts });
     } catch (error) {
         console.log(error);
     }
