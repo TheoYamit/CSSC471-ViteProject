@@ -17,3 +17,5 @@ Have to run the server while on the website.
 1. Navigate to the ServerBackend directory.
 2. do npm install
 3. then do 'node server.js'
+
+The database was meant to be ran on local machine so if you do need to run it, the SQL dump files are there.
