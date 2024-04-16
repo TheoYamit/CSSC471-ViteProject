@@ -13,7 +13,6 @@ import { Drawer } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { useOrder } from '../../contexts/Order/Order';
-import { use } from 'bcrypt/promises';
 
 
 const categories = [
