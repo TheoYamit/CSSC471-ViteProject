@@ -113,7 +113,8 @@ const EditProductManagement = () => {
       }
 
     }
-    if (status == 'success') {
+
+    if (status == "success") {
       setTimeout(() => {
         toggleGotProduct();
         setAlertInfo({

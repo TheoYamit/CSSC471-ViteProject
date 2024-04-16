@@ -48,6 +48,8 @@ const AdminReviewComponent = () => {
     }
 
     setListOfReviews(listofreviews);
+
+
   };
 
   // When admin clicks on a product
